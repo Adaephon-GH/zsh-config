@@ -1,4 +1,3 @@
-
 # vim: fmr={{{,}}} fdm=marker cms=#\ %s :
 
 # load dircolors here
@@ -6,6 +5,10 @@ if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 fi
 
+
+if [[ -s '/etc/zsh_command_not_found' ]]; then
+  source '/etc/zsh_command_not_found'
+fi
 
 # addons
 autoload -Uz zcalc
