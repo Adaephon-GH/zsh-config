@@ -98,9 +98,6 @@ setopt autocontinue
 #setopt promptbang
 setopt promptsubst
 setopt promptpercent
-#deactivated for highlighting
-#zle_highlight[(r)default:*]="default:fg=white,bold" 
-zle_highlight[(r)isearch:*]="isearch:fg=yellow,standout,bold"
 
 # {{{ $terminfo helper functions
 # Make sure the terminal is in application mode, when zle is
@@ -390,5 +387,11 @@ if [[ -e ~/.zsh_env ]]; then
     . ~/.zsh_env
 fi
 
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/zsh-syntax-highlighting.conf
+# ZLE builtin highlighting (comment default if using zsh-syntax-highlighting)
+zle_highlight[(r)default:*]="default:fg=white,bold" 
+zle_highlight[(r)isearch:*]="isearch:fg=yellow,standout,bold"
+zle_highlight[(r)suffix:*]="suffix:fg=magenta,bold"
+
+# disable until https://github.com/zsh-users/zsh-syntax-highlighting/issues/108 is solved
+#source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source ~/.zsh/zsh-syntax-highlighting.conf
