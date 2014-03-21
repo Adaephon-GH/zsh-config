@@ -5,11 +5,6 @@ if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 fi
 
-
-if [[ -s '/etc/zsh_command_not_found' ]]; then
-  source '/etc/zsh_command_not_found'
-fi
-
 # addons
 autoload -Uz zcalc
 autoload -Uz zmv
@@ -398,3 +393,10 @@ zle_highlight[(r)suffix:*]="suffix:fg=magenta,bold"
 # disable until https://github.com/zsh-users/zsh-syntax-highlighting/issues/108 is solved
 #source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #source ~/.zsh/zsh-syntax-highlighting.conf
+
+# load system specific configuration
+if [[ -s '/etc/os-release' ]]; then
+    if grep -q ubuntu '/etc/os-release' ; then
+        source ~/.zsh_ubuntu
+    fi
+fi
