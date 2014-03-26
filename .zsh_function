@@ -52,3 +52,10 @@ function mkcd () {
     cd "$1"
 }
 compdef _mkdir mkcd
+
+function alertme () {
+    at $1 <<EOM
+notify-send '$1' '$2' -u critical
+EOM
+
+}
