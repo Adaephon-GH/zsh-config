@@ -363,28 +363,6 @@ histignore() {
 # do automatic time for processes which use more CPU time
 REPORTTIME=10
 
-# load more key bindings
-if [[ -e ~/.zsh_bindkey ]]; then
-    . ~/.zsh_bindkey
-else
-    bindkey -e
-fi
-
-# load aliases
-if [[ -e ~/.zsh_alias ]]; then
-    . ~/.zsh_alias
-fi
-
-# load functions
-if [[ -e ~/.zsh_function ]]; then
-    . ~/.zsh_function
-fi
-
-# load environment
-if [[ -e ~/.zsh_env ]]; then
-    . ~/.zsh_env
-fi
-
 # ZLE builtin highlighting (comment default if using zsh-syntax-highlighting)
 zle_highlight[(r)default:*]="default:fg=white,bold" 
 zle_highlight[(r)isearch:*]="isearch:fg=yellow,standout,bold"
@@ -394,9 +372,9 @@ zle_highlight[(r)suffix:*]="suffix:fg=magenta,bold"
 #source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #source ~/.zsh/zsh-syntax-highlighting.conf
 
-# load system specific configuration
-if [[ -s '/etc/os-release' ]]; then
-    if grep -q ubuntu '/etc/os-release' ; then
-        source ~/.zsh_ubuntu
-    fi
+# load additional configuration
+if [[ -d ~/.zsh/zshrc.d ]]; then
+    for file in ~/.zsh/zshrc.d/*.zsh; do
+        source "$file"
+    done
 fi
