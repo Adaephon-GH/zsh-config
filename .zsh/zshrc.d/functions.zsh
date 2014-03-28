@@ -54,8 +54,10 @@ function mkcd () {
 compdef _mkdir mkcd
 
 function alertme () {
-    at $1 <<EOM
-notify-send '$1' '$2' -u critical
+    local t=$1
+    shift
+    at $t <<EOM
+notify-send '$t' '$@' -u critical
 EOM
 
 }
