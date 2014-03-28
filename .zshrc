@@ -143,8 +143,8 @@ zstyle ':vcs_info:hg*:*' nopatch-format "mq(%g):%n/%c %p"
 zstyle ':vcs_info:hg*:*' hgrevformat '%F{11}%r%F{1}:%F{3}%12.12h'
 
 # Git hash changes branch misc
-zstyle ':vcs_info:git*' formats "%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%b%F{1}:%F{3}%12.12i%F{11}%c%u %F{1}%m%F{5}]%f"
-zstyle ':vcs_info:git*' actionformats "%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%b%F{1}:%F{3}%12.12i%F{11}%c%u %F{1}%m%F{5}|%F{1}%a%F{5}]%f"
+zstyle ':vcs_info:git*' formats "%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%b%F{1}:%F{3}%10.10i%F{11}%c%u %F{1}%m%F{5}]%f"
+zstyle ':vcs_info:git*' actionformats "%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%b%F{1}:%F{3}%10.10i%F{11}%c%u %F{1}%m%F{5}|%F{1}%a%F{5}]%f"
 zstyle ':vcs_info:git*' branchformat "%b:%r"
 zstyle ':vcs_info:git*' get-unapplied true
 #zstyle ':vcs_info:git*' patch-format "%p:%n/%c %p"
