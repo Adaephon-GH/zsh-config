@@ -107,7 +107,7 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
         emulate -L zsh
         printf '%s' ${terminfo[smkx]}
     }
-    function leave-kdb-transmit-mode () {
+    function leave-kbd-transmit-mode () {
         emulate -L zsh
         printf '%s' ${terminfo[rmkx]}
     }
@@ -286,7 +286,7 @@ function zle-line-init {
     enter-kbd-transmit-mode
 }
 function zle-line-finish {
-    leave-kdb-transmit-mode
+    leave-kbd-transmit-mode
 }
 zle -N zle-line-init
 zle -N zle-line-finish
