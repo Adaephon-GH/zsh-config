@@ -262,8 +262,9 @@ PINFO=(
     date        $'%b%F{cyan}%D{%H:%M:%S}'
     user-host   $'%b%(2V.%S%(!.%F{red} %m %f.%F{yellow} %n@%m )%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
     pipestatus  $'%(?.${pipestatuscolor}.%B%F{red})[$pipestatus]'
-    pwd         $'%B%F{blue}< %~ >'
-    jobs        $'%(1j.%F{yellow}(%j job%(2j.s.)).)'
+    pwd         $'%B%F{blue}< %~ >%f%b'
+    jobs        $'%(1j. %B%F{yellow}(%j job%(2j.s.))%f%b.)'
+    shlvl       $'%(2L. %F{magenta}#%L%f.)'
     histnum     $'%b%(2V.%(!.%F{red}.%F{yellow}).%(!.%F{red}.%F{green}))%h'
     vim         $'${vicmdindicator}'
     prompt      $'%#%b%f%k '
@@ -271,7 +272,7 @@ PINFO=(
     indent      $'%(2_:  :)%(3_:  :)%(4_:  :)%(5_:..:)'
 )
 
-PROMPT="$PINFO[virtenv]$PINFO[date] $PINFO[user-host] $PINFO[pipestatus] $PINFO[pwd] $PINFO[jobs]
+PROMPT="$PINFO[virtenv]$PINFO[date] $PINFO[user-host] $PINFO[pipestatus] $PINFO[pwd]$PINFO[jobs]$PINFO[shlvl]
 $PINFO[histnum]$PINFO[vim]$PINFO[prompt]"
 
 PROMPT2="$PINFO[histnum]$PINFO[indent]$PINFO[vim]$PINFO[prompt2]"
