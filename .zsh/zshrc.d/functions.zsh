@@ -61,3 +61,11 @@ notify-send '$t' '$@' -u critical
 EOM
 
 }
+
+function zsh-git i3-git () {
+    local GITDIR="${HOME}/config.git/${0%-git}-config/.git"
+    git --work-tree="$HOME" --git-dir="$GITDIR" "$@"
+}
+compdef '_dispatch git git' zsh-git
+compdef '_dispatch git git' i3-git
+
