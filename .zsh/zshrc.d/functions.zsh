@@ -9,7 +9,7 @@ function termcolors ()
         for r (0 1 2 3 4 5 6 7)
         do
             c=$(( 8 * b + r ))
-            print -nP "%${c}K  %k"
+            print -nP "%K{$c}  %k"
         done
         printf " %2d\n" $(( 8 * b + 7 ))
     done
@@ -26,7 +26,7 @@ function termcolors ()
             for b (0 1 2 3 4 5)
             do
                 c=$(( 16 + 36 * r + 6 * g + b ))
-                print -nP "%${c}K  %k"
+                print -nP "%K{$c}  %k"
             done
             printf " %3d\n" $(( 16 + 36 * r + 6 * g + 5))
         done
@@ -40,7 +40,7 @@ function termcolors ()
     do
         c=$(( 232 + g ))
         printf "%2d %3d " $g $c
-        print -P "%${c}K  %k"
+        print -P "%K{$c}  %k"
     done
 
 
