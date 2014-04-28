@@ -144,6 +144,13 @@ zstyle ':vcs_info:hg*:*' nopatch-format "mq(%g):%n/%c %p"
 zstyle ':vcs_info:hg*:*' hgrevformat '%F{11}%r%F{1}:%F{3}%12.12h'
 
 # Git hash changes branch misc
++vi-git-untracked(){
+    if [[ -n $(git ls-files --other --exclude-standard -- $(git rev-parse --show-cdup 2>/dev/null) 2>/dev/null) ]]; then
+        hook_com[unstaged]+='-'
+    fi
+}
+
+zstyle ':vcs_info:git+set-message:*' hooks git-untracked
 zstyle ':vcs_info:git*' formats "%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%b%F{1}:%F{3}%10.10i%F{11}%c%u %F{1}%m%F{5}]%f"
 zstyle ':vcs_info:git*' actionformats "%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%b%F{1}:%F{3}%10.10i%F{11}%c%u %F{1}%m%F{5}|%F{1}%a%F{5}]%f"
 zstyle ':vcs_info:git*' branchformat "%b:%r"
