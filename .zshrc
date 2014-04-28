@@ -145,8 +145,24 @@ zstyle ':vcs_info:hg*:*' hgrevformat '%F{11}%r%F{1}:%F{3}%12.12h'
 
 # Git hash changes branch misc
 +vi-git-untracked(){
-    if [[ -n $(git ls-files --other --exclude-standard -- $(git rev-parse --show-cdup 2>/dev/null) 2>/dev/null) ]]; then
-        hook_com[unstaged]+='-'
+    local staged unstaged untracked
+
+    staged=$(git status --porcelain | grep -c '^[MADRC]')
+    if [[ $staged -gt 1 ]]; then
+        hook_com[staged]+="$staged "
+    fi
+
+    unstaged=$(git status --porcelain | grep -c '^.[MD]')
+    if [[ $unstaged -gt 1 ]]; then
+        hook_com[unstaged]+="$unstaged "
+    fi
+
+    untracked=$(git status --porcelain | grep -c '^??')
+    if [[ $untracked -gt 0 ]]; then
+        hook_com[unstaged]+='?'
+        if [[ $untracked -gt 1 ]]; then
+            hook_com[unstaged]+="$untracked"
+        fi
     fi
 }
 
