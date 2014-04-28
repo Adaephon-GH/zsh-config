@@ -147,21 +147,28 @@ zstyle ':vcs_info:hg*:*' hgrevformat '%F{11}%r%F{1}:%F{3}%12.12h'
 +vi-git-untracked(){
     local staged unstaged untracked
 
-    staged=$(git status --porcelain | grep -c '^[MADRC]')
-    if [[ $staged -gt 1 ]]; then
-        hook_com[staged]+="$staged "
+    local -A counts
+    counts=(
+        $(git status --porcelain | awk '
+            BEGIN {st=0; us=0; ut=0}
+            /^[MADRC]/ {st+=1}
+            /^.[MD]/ {us+=1}
+            /^\?\?/ {ut+=1}
+            END {print "staged", st, "unstaged", us, "untracked", ut}'
+            ))
+    
+    if [[ ${counts[staged]} -gt 1 ]]; then
+        hook_com[staged]+="${counts[staged]} "
     fi
 
-    unstaged=$(git status --porcelain | grep -c '^.[MD]')
-    if [[ $unstaged -gt 1 ]]; then
-        hook_com[unstaged]+="$unstaged "
+    if [[ ${counts[unstaged]} -gt 1 ]]; then
+        hook_com[unstaged]+="${counts[unstaged]} "
     fi
 
-    untracked=$(git status --porcelain | grep -c '^??')
-    if [[ $untracked -gt 0 ]]; then
+    if [[ ${counts[untracked]} -gt 0 ]]; then
         hook_com[unstaged]+='?'
-        if [[ $untracked -gt 1 ]]; then
-            hook_com[unstaged]+="$untracked"
+        if [[ ${counts[untracked]} -gt 1 ]]; then
+            hook_com[unstaged]+="${counts[untracked]}"
         fi
     fi
 }
