@@ -95,9 +95,3 @@ fancy-ctrl-z () {
 }
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
-
-reload-config () {
-    source ~/.zshrc
-}
-zle -N reload-config
-bindkey '^[R' reload-config

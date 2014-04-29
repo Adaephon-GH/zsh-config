@@ -410,3 +410,10 @@ if [[ -d ~/.zsh/zshrc.d ]]; then
         source "$file"
     done
 fi
+
+# enable reloading of config with Ctrl+Alt+R
+reload-config () {
+    source ~/.zshrc
+}
+zle -N reload-config
+bindkey '^[R' reload-config
