@@ -13,12 +13,13 @@ autoload -Uz add-zsh-hook
 # {{{ Completion
 # The following lines were added by compinstall
 
-zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' completer _expand _complete _approximate
 zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*' file-sort name
 zstyle ':completion:*' format '%F{blue}%U>>> %d%u%f'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' ignore-parents parent pwd .. directory
+zstyle ':completion:*:*:-command-:*:*' ignored-patterns '_*'
 zstyle ':completion:*' insert-unambiguous true
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
