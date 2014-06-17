@@ -414,7 +414,10 @@ fi
 
 # enable reloading of config with Ctrl+Alt+R
 reload-config () {
+    print -Pn $'\e[s\e[2C%B%F{cyan}--> reloading configuration <--%b%f\e[u'
     source ~/.zshrc
+    sleep .1
+    print -n '\e[K'
 }
 zle -N reload-config
 bindkey '^[R' reload-config
