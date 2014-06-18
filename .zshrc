@@ -414,10 +414,10 @@ fi
 
 # enable reloading of config with Ctrl+Alt+R
 reload-config () {
-    print -Pn $'\e[s\e[2C%B%F{cyan}--> reloading configuration <--%b%f\e[u'
+    #print -Pn $'\e[s\e[2C%B%F{cyan}--> reloading configuration <--%b%f\e[u'
+    local text='--> configuration reloaded '
     source ~/.zshrc
-    sleep .1
-    print -n '\e[K'
+    print -Pn $'\e[s\e[F\e[$[COLUMNS-$#text]C%F{cyan}$text%f\e[u'
 }
 zle -N reload-config
 bindkey '^[R' reload-config
