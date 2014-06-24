@@ -17,3 +17,5 @@ export LC_IDENTIFICATION="en_US.UTF-8"
 # environment settings
 export MINICOM="-m -c on"
 
+export EDITOR="vim"
+export PAGER="less"
