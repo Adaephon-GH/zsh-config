@@ -268,6 +268,7 @@ psvar[2]=${$(logintype)#local}
 # {{{ get exit codes of previous command or pipeline
 pipestatus () {
     pipestatuscolor='%B%F{green}'
+    local excode
     for excode in $pipestatus; [ $excode -ne 0 ] && pipestatuscolor='%B%F{yellow}' 
   
 }
@@ -410,6 +411,7 @@ if [[ -d ~/.zsh/zshrc.d ]]; then
     for file in ~/.zsh/zshrc.d/*.zsh; do
         source "$file"
     done
+    unset file
 fi
 
 # enable reloading of config with Ctrl+Alt+R
