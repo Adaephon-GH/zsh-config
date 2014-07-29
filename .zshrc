@@ -146,6 +146,8 @@ zstyle ':vcs_info:hg*:*' hgrevformat '%F{11}%r%F{1}:%F{3}%12.12h'
 
 # Git hash changes branch misc
 +vi-git-untracked(){
+    # Abort if not in work-tree
+    [[ $(git rev-parse --is-inside-work-tree) = 'false' ]] && return
     local staged unstaged untracked
 
     local -A counts
