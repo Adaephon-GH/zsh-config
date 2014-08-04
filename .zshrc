@@ -124,7 +124,7 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable cvs git hg svn
 ## general format
 zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%B%b%%b%F{3}|%F{1}%a%F{5}]%f'
-zstyle ':vcs_info:*' formats       '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%B%b%%B%F{5}]%f'
+zstyle ':vcs_info:*' formats       '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%B%b%%b%F{5}]%f'
 
 zstyle ':vcs_info:(sv[nk]|bzr|hg*):*' branchformat '%B%b%%b%F{1}:%F{3}%r'
 
