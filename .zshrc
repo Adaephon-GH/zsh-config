@@ -123,10 +123,10 @@ fi
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable cvs git hg svn
 ## general format
-zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%b%F{3}|%F{1}%a%F{5}]%f'
-zstyle ':vcs_info:*' formats       '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%b%F{5}]%f'
+zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%B%b%%b%F{3}|%F{1}%a%F{5}]%f'
+zstyle ':vcs_info:*' formats       '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%B%b%%B%F{5}]%f'
 
-zstyle ':vcs_info:(sv[nk]|bzr|hg*):*' branchformat '%b%F{1}:%F{3}%r'
+zstyle ':vcs_info:(sv[nk]|bzr|hg*):*' branchformat '%B%b%%b%F{1}:%F{3}%r'
 
 ## Mercurial and Git
 zstyle ':vcs_info:(hg*|git*):*' get-revision true
@@ -177,8 +177,8 @@ zstyle ':vcs_info:hg*:*' hgrevformat '%F{11}%r%F{1}:%F{3}%12.12h'
 }
 
 zstyle ':vcs_info:git+set-message:*' hooks git-untracked
-zstyle ':vcs_info:git*' formats "%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%b%F{1}:%F{3}%10.10i %F{11}%c%u %F{1}%m%F{5}]%f"
-zstyle ':vcs_info:git*' actionformats "%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%b%F{1}:%F{3}%10.10i %F{11}%c%u %F{1}%m%F{5}|%F{1}%a%F{5}]%f"
+zstyle ':vcs_info:git*' formats "%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%B%b%%b%F{1}:%F{3}%10.10i %F{11}%c%u %F{1}%m%F{5}]%f"
+zstyle ':vcs_info:git*' actionformats "%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%B%r/%b%%b%F{1}:%F{3}%10.10i %F{11}%c%u %F{1}%m%F{5}|%F{1}%a%F{5}]%f"
 zstyle ':vcs_info:git*' branchformat "%b:%r"
 zstyle ':vcs_info:git*' get-unapplied true
 zstyle ':vcs_info:git*' patch-format "%p:%n/%c %p"
