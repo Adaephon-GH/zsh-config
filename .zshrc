@@ -54,7 +54,6 @@ setopt braceccl
 
 # commandline behaviour
 setopt autocd
-setopt cdablevars
 DIRSTACKSIZE=16
 setopt autopushd
 setopt pushdignoredups
