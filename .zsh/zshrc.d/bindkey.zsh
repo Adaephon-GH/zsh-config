@@ -13,6 +13,8 @@ bindkey "^[r" history-incremental-search-forward
 bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word
 
+bindkey " " magic-space
+
 # Home
 bindkey "^[OH" beginning-of-line
 bindkey "^[[H" beginning-of-line
