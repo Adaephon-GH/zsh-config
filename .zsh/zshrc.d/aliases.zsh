@@ -39,3 +39,5 @@ alias cgit="git --work-tree='$HOME' --git-dir=.git"
 alias -g GG='| grep'
 
 alias -g NPK='-o PubkeyAuthentication=no'
+
+alias ssh-temp='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
