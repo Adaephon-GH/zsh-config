@@ -20,6 +20,7 @@ zstyle ':completion:*' format '%F{blue}%U>>> %d%u%f'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' ignore-parents parent pwd .. directory
 zstyle ':completion:*:*:-command-:*:*' ignored-patterns '_*'
+zstyle ':completion:*:complete:-tilde-:*' tag-order 'named-directories directory-stack' users
 zstyle ':completion:*' insert-unambiguous true
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
