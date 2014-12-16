@@ -42,9 +42,6 @@ function termcolors ()
         printf "%2d %3d " $g $c
         print -P "%K{$c}  %k"
     done
-
-
-    unset rgbc
 }
 
 function mkcd () {
