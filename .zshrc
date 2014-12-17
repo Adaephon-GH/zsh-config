@@ -44,6 +44,8 @@ zstyle ':completion:*:processes-names' command 'ps -e -o comm='
 # for kill
 zstyle ':completion:*:processes' command 'ps -a -u $USER -H -o pid,tty,time,command'
 zstyle ':completion:*:processes' list-colors '=(#b) #([0-9]#)*=0=00;32'
+
+ZSH_SPACE_SUFFIX_CHARS=$'|&'
 # }}}
 
 # {{{ General options: Globbing, History
