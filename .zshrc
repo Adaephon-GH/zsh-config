@@ -299,7 +299,7 @@ typeset -A PINFO
 PINFO=(
     virtenv     $'%(1V.%F{yellow}%B\{%1v\} %b%f.)'
     date        $'%b%F{cyan}%D{%H:%M:%S}'
-    user-host   $'%b%(2V.%S%(!.%F{red} %m %f.%F{yellow} %n@%m )%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
+    user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
     pipestatus  $'%(?.${pipestatuscolor}.%B%F{red})[$pipestatus]'
     pwd         $'%B%F{blue}< %~ >%f%b'
     jobs        $'%(1j. %B%F{yellow}(%j job%(2j.s.))%f%b.)'
