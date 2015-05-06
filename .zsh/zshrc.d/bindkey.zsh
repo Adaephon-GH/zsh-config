@@ -77,6 +77,10 @@ bindkey "^[Q" push-line-or-edit
 
 bindkey "^[" vi-cmd-mode
 bindkey -a "^[" vi-add-next
+# workaround to prevent prompt from moving upwards - deleting lines -
+# when Escape is pressed twice in quick succession
+bindkey "^[^[" redisplay
+bindkey -a "^[^[" redisplay
 
 autoload -Uz edit-command-line
 zle -N edit-command-line
