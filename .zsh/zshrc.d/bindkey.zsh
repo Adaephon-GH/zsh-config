@@ -75,8 +75,8 @@ bindkey "^Q" push-line-or-edit
 bindkey "^[q" push-line-or-edit
 bindkey "^[Q" push-line-or-edit
 
-bindkey "^[^[" vi-cmd-mode
-bindkey -a "^[^[" vi-add-next
+bindkey "^[" vi-cmd-mode
+bindkey -a "^[" vi-add-next
 
 autoload -Uz edit-command-line
 zle -N edit-command-line
