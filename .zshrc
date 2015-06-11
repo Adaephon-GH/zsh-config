@@ -300,7 +300,7 @@ PINFO=(
     virtenv     $'%(1V.%F{yellow}%B\{%1v\} %b%f.)'
     date        $'%b%F{cyan}%D{%H:%M:%S}'
     user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
-    pipestatus  $'%(?.${pipestatuscolor}.%B%F{red})[$pipestatus]'
+    pipestatus  $'%U%(?.${pipestatuscolor}.%B%F{red})${(l:$COLUMNS:: ::%u [:)pipestatus}]'
     pwd         $'%B%F{blue}< %~ >%f%b'
     jobs        $'%(1j. %B%F{yellow}(%j job%(2j.s.))%f%b.)'
     shlvl       $'%(2L. %F{magenta}#%L%f.)'
@@ -311,7 +311,8 @@ PINFO=(
     indent      $'%(2_:  :)%(3_:  :)%(4_:  :)%(5_:..:)'
 )
 
-PROMPT="$PINFO[virtenv]$PINFO[date] $PINFO[user-host] $PINFO[pipestatus] $PINFO[pwd]$PINFO[jobs]$PINFO[shlvl]
+PROMPT="$PINFO[pipestatus]
+$PINFO[virtenv]$PINFO[date] $PINFO[user-host] $PINFO[pwd]$PINFO[jobs]$PINFO[shlvl]
 $PINFO[histnum]$PINFO[vim]$PINFO[prompt]"
 
 PROMPT2="$PINFO[histnum]$PINFO[indent]$PINFO[vim]$PINFO[prompt2]"
