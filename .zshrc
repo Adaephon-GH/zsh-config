@@ -273,6 +273,7 @@ psvar[2]=${$(logintype)#local}
 # {{{ get exit codes of previous command or pipeline
 pipestatus () {
     set $pipestatus
+    pipestatus_str=$pipestatus
     pipestatuscolor='%B%F{green}'
     local excode
     for excode in $*; [ $excode -ne 0 ] && pipestatuscolor='%B%F{yellow}' 
@@ -300,7 +301,7 @@ PINFO=(
     virtenv     $'%(1V.%F{yellow}%B\{%1v\} %b%f.)'
     date        $'%b%F{cyan}%D{%H:%M:%S}'
     user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
-    pipestatus  $' %(?.${pipestatuscolor}.%B%F{red})[${(r:$COLUMNS-1:: ::] %U:)pipestatus}%u'
+    pipestatus  $'%(?.${pipestatuscolor}.%B%F{red})%{\e(0%}mqu%{\e(B%} $pipestatus_str %{\e(0%}t${(r:$COLUMNS-8-$#pipestatus_str::q:)}j%{\e(B%}'
     pwd         $'%B%F{blue}< %~ >%f%b'
     jobs        $'%(1j. %B%F{yellow}(%j job%(2j.s.))%f%b.)'
     shlvl       $'%(2L. %F{magenta}#%L%f.)'
