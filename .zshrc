@@ -273,7 +273,7 @@ psvar[2]=${$(logintype)#local}
 # {{{ get exit codes of previous command or pipeline
 pipestatus () {
     set $pipestatus
-    pipestatus_str=$pipestatus
+    pipestatus_str="$*"
     pipestatuscolor='%B%F{green}'
     local excode
     for excode in $*; [ $excode -ne 0 ] && pipestatuscolor='%B%F{yellow}' 
