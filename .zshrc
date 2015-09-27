@@ -276,8 +276,14 @@ pipestatus () {
     pipestatuscolor='%B%F{green}'
     local excode
     for (( ec=1 ; ec <= $#pipestatus_ ; ec++ )) do
-        [ $pipestatus_[ec] -ne 0 ] && pipestatuscolor='%B%F{yellow}' 
-        [ $pipestatus_[ec] -gt 128 ] && pipestatus_[ec]=$(kill -l $pipestatus_[ec])
+        if [ $pipestatus_[ec] -eq 0 ] ; then
+            pipestatus_[ec]="ok"
+        else
+            pipestatuscolor='%B%F{yellow}' 
+            if [ $pipestatus_[ec] -gt 128 ] ; then
+                pipestatus_[ec]=$(kill -l $pipestatus_[ec])
+            fi
+        fi
     done
     pipestatus_str="$pipestatus_"
     unset pipestatus_
