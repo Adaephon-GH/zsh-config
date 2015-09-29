@@ -62,10 +62,9 @@ EOM
 # define git functions for all configurations in ~/config.git
 for config_dir in "${HOME}/config.git"/*-config
 do
-    git_name="${${config_dir##*/}%-config}-git"
+    local git_name="${${config_dir##*/}%-config}-git"
     function "${git_name}" () {
-        local GITDIR="${HOME}/config.git/${0%-git}-config/.git"
-        git --work-tree="$HOME" --git-dir="$GITDIR" "$@"
+        git -C $config_dir "$@"
     }
     compdef '_dispatch git git' ${git_name}
 done
