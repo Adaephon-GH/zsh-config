@@ -425,12 +425,14 @@ zle_highlight[(r)suffix:*]="suffix:fg=magenta,bold"
 #source ~/.zsh/zsh-syntax-highlighting.conf
 
 # load additional configuration
-if [[ -d ~/.zsh/zshrc.d ]]; then
-    for file in ~/.zsh/zshrc.d/*.zsh; do
-        source "$file"
-    done
-    unset file
-fi
+for extraconf in ~/.zsh/zshrc.d ~/.zsh.local/zshrc.d; do
+    if [[ -d $extraconf ]]; then
+        for file in ${extraconf}/*.zsh; do
+            source "$file"
+        done
+        unset file
+    fi
+done
 
 # enable reloading of config with Ctrl+Alt+R
 reload-config () {
