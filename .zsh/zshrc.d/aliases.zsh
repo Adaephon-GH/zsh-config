@@ -29,7 +29,7 @@ alias -g ..9='../../../../../../../../..'
 #alias -- -='popd'
 #alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(print -Pn "Process on %y finished\n${curcmd}")"; echo \\a'
-alias xfreerdp="xfreerdp --sec rdp -g 1280x960 -k 0x00010407"
+alias xfreerdp="xfreerdp /sec:rdp /w:1280 /h:960 /kbd:0x00010407 +clipboard"
 
 alias omplayer="mplayer -osdlevel 3 -use-filename-title -progbar-align 100 -fixed-vo"
 
