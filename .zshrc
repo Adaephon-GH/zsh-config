@@ -53,6 +53,7 @@ ZSH_SPACE_SUFFIX_CHARS=$'|&'
 # globbing
 autoload -Uz age
 setopt extendedglob
+setopt globstarshort
 setopt braceccl
 
 # commandline behaviour
