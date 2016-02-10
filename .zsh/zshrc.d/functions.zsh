@@ -54,7 +54,7 @@ function alertme () {
     local t=$1
     shift
     at $t <<EOM
-notify-send '$t' '$@' -u critical
+notify-send 'ALERT $t' '$@' -u critical
 EOM
 
 }
