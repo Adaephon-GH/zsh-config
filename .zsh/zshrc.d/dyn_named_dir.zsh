@@ -36,12 +36,12 @@ __tempdirs() {
     if [[ $1 = d ]]; then
         if [[ $2 = (#b)(/tmp/foo/)([^/]##)* ]]; then
             typeset -ga reply
-            reply=(foo:$match[2] $(( ${#match[1]} + ${#match[2]} )) )
+            reply=(f:$match[2] $(( ${#match[1]} + ${#match[2]} )) )
         else
             return 1
         fi
     elif [[ $1 = n ]]; then
-        [[ $2 != (#b)foo:(?*) ]] && return 1
+        [[ $2 != (#b)f:(?*) ]] && return 1
         typeset -ga reply
         reply=("/tmp/foo/${match[1]}")
     elif [[ $1 = c ]]; then
@@ -49,7 +49,7 @@ __tempdirs() {
         local -a dirs
         dirs=(/tmp/foo/*(/:t))
         for (( i=1; i<=$#dirs; i++ )); do
-            dirs[$i]=foo:${dirs[$i]}
+            dirs[$i]=f:${dirs[$i]}
         done
         _wanted dynamic-dirs expl 'dynamic directory' compadd -S\] -a dirs
         return
