@@ -309,7 +309,7 @@ zle -N zle-keymap-select
 typeset -A PINFO
 
 PINFO=(
-    virtenv     $'%(1V.%F{yellow}%B\{%1v\} %b%f.)'
+    virtenv     $'%(1V.%F{yellow}%B[%1v] %b%f.)'
     date        $'%b%F{cyan}%*'
     user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
     pipestatus  $'%(?.${pipestatuscolor}.%B%F{red})\u2514\u2500\u2562 $pipestatus_str \u255f${(r:$COLUMNS-7-$#pipestatus_str::\u2500:)}\u2518'
