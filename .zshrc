@@ -306,7 +306,9 @@ function zle-keymap-select {
 zle -N zle-keymap-select
 # }}}
 
-typeset -A PINFO
+() { # local scope
+local -A PINFO
+local top middle bottom invisible middlecontent
 
 PINFO=(
     virtenv     $'%(1V.%F{yellow}%B[%1v] %b%f.)'
@@ -331,13 +333,14 @@ invisible='%([BSUbfksu]|([FBK]|){*})'
 
 middlecontent=${(S)middle//$~invisible}
 
-PROMPT="$top$middle\${(r:\$COLUMNS - \${#\${(%)middlecontent}} % \$COLUMNS:)}$bottom"
+PROMPT="$top$middle\${(r,\$COLUMNS - \${#\${(%):-$middlecontent}} % \$COLUMNS,)}$bottom"
 
 PROMPT2="$PINFO[histnum]$PINFO[indent]$PINFO[vim]$PINFO[prompt2]"
 
 RPROMPT='${vcs_info_msg_0_}'
 
 RPROMPT2=$'<%(!.%F{red}.%F{green})%_%b%f%k'
+}
 
 # {{{ zle line editor initialization
 function zle-line-init {
