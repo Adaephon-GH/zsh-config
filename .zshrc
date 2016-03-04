@@ -310,7 +310,7 @@ typeset -A PINFO
 
 PINFO=(
     virtenv     $'%(1V.%F{yellow}%B\{%1v\} %b%f.)'
-    date        $'%b%F{cyan}%D{%H:%M:%S}'
+    date        $'%b%F{cyan}%D{%T}'
     user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
     pipestatus  $'%(?.${pipestatuscolor}.%B%F{red})\u2514\u2500\u2562 $pipestatus_str \u255f${(r:$COLUMNS-7-$#pipestatus_str::\u2500:)}\u2518'
     pwd         $'%B%F{blue}< %~ >%f%b'
@@ -323,7 +323,15 @@ PINFO=(
     indent      $'%(2_:  :)%(3_:  :)%(4_:  :)%(5_:..:)'
 )
 
-PROMPT="$PINFO[pipestatus]$PINFO[virtenv]$PINFO[date] $PINFO[user-host] $PINFO[pwd]$PINFO[jobs]$PINFO[shlvl] $PINFO[histnum]$PINFO[vim]$PINFO[prompt]"
+top="$PINFO[pipestatus]"
+middle="$PINFO[virtenv]$PINFO[date] $PINFO[user-host] $PINFO[pwd]$PINFO[jobs]$PINFO[shlvl]"
+bottom="$PINFO[histnum]$PINFO[vim]$PINFO[prompt]"
+
+invisible='%([BSUbfksu]|([FBK]|){*})'
+
+middlecontent=${(S)middle//$~invisible}
+
+PROMPT="$top$middle\${(r:\$COLUMNS - \${#\${(%)middlecontent}} % \$COLUMNS:)}$bottom"
 
 PROMPT2="$PINFO[histnum]$PINFO[indent]$PINFO[vim]$PINFO[prompt2]"
 
