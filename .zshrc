@@ -126,7 +126,7 @@ fi
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable cvs git hg svn
 ## general settings
-zstyle ':vcs_info:*' disable-patterns "/mnt(|/*)"
+zstyle ':vcs_info:*' disable-patterns "/(mnt|misc)(|/*)"
 zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%B%b%%b%F{3}|%F{1}%a%F{5}]%f'
 zstyle ':vcs_info:*' formats       '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%r/%B%b%%b%F{5}]%f'
 
