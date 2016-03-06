@@ -327,7 +327,7 @@ PINFO=(
 
 top="$PINFO[pipestatus]"
 middleleft="$PINFO[virtenv]$PINFO[date] $PINFO[user-host] $PINFO[pwd]"
-middleright="$PINFO[jobs]$PINFO[shlvl]"
+middleright="$PINFO[jobs]$PINFO[shlvl] "
 bottom="$PINFO[histnum]$PINFO[vim]$PINFO[prompt]"
 
 invisible='%([BSUbfksu]|([FBK]|){*})'
