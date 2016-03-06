@@ -326,14 +326,16 @@ PINFO=(
 )
 
 top="$PINFO[pipestatus]"
-middle="$PINFO[virtenv]$PINFO[date] $PINFO[user-host] $PINFO[pwd]$PINFO[jobs]$PINFO[shlvl]"
+middleleft="$PINFO[virtenv]$PINFO[date] $PINFO[user-host] $PINFO[pwd]"
+middleright="$PINFO[jobs]$PINFO[shlvl]"
 bottom="$PINFO[histnum]$PINFO[vim]$PINFO[prompt]"
 
 invisible='%([BSUbfksu]|([FBK]|){*})'
 
-middlecontent=${(S)middle//$~invisible}
+middleleftcontent=${(S)middleleft//$~invisible}
+middlerightcontent=${(S)middleright//$~invisible}
 
-PROMPT="$top$middle\${(r,\$COLUMNS - \${#\${(%):-$middlecontent}} % \$COLUMNS,)}$bottom"
+PROMPT="$top$middleleft\${(r,\$COLUMNS - \${#\${(%):-$middleleftcontent$middlerightcontent}} % \$COLUMNS,)}$middleright$bottom"
 
 PROMPT2="$PINFO[histnum]$PINFO[indent]$PINFO[vim]$PINFO[prompt2]"
 
