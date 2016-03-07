@@ -341,7 +341,7 @@ PROMPT2="$PINFO[histnum]$PINFO[indent]$PINFO[vim]$PINFO[prompt2]"
 
 RPROMPT='${vcs_info_msg_0_}'
 
-RPROMPT2=$'<%(!.%F{red}.%F{green})%_%b%f%k'
+RPROMPT2=$'<%(!.%F{red}.%F{green})%^%b%f%k'
 }
 
 # {{{ zle line editor initialization
