@@ -30,6 +30,7 @@ zstyle ':completion:*' max-errors 1 numeric
 zstyle ':completion:*' menu select=1
 zstyle ':completion:*' original true
 zstyle ':completion:*' preserve-prefix '//[^/]##/'
+zstyle ':completion:*' rehash true
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*' verbose true
 zstyle :compinstall filename '/home/mruf/.zshrc'
