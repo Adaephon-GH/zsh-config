@@ -47,6 +47,8 @@ zstyle ':completion:*:processes' command 'ps -a -u $USER -H -o pid,tty,time,comm
 zstyle ':completion:*:processes' list-colors '=(#b) #([0-9]#)*=0=00;32'
 
 ZSH_SPACE_SUFFIX_CHARS=$'|&'
+
+setopt magicequalsubst
 # }}}
 
 # {{{ General options: Globbing, History
