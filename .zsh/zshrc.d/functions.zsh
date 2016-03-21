@@ -2,10 +2,8 @@ termcolors ()
 {
     print TERM
 
-    print -P "Foreground: %S %s"
-    print -P "Background: %S█%s"
-
-    print
+    print -P "Foreground: >█<"
+    print -P "Background: >%S█%s<\n"
 
     print "      0 1 2 3 4 5 6 7" 
     for b (0 1)
