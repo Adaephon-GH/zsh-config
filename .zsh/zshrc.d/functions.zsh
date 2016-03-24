@@ -73,3 +73,16 @@ do
     }
     compdef '_dispatch git git' ${git_name}
 done
+
+# run git commands on all git repositories directly inside the current directory
+subdirgit () {
+    for dir in */.git(/)
+    do
+        print -P "%F{yellow}${(r,${#dir:h} + 8,,#,):-}%f"
+        print -P "%F{yellow}### %B${dir:h}%b%F{yellow} ###%f"
+        print -P "%F{yellow}${(r,${#dir:h} + 8,,#,):-}%f"
+        git -C ${dir:h} $@
+        print
+    done
+}
+compdef '_dispatch git git' subdirgit
