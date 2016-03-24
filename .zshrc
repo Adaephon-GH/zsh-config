@@ -111,16 +111,16 @@ setopt promptpercent
 # These are just helper functions that have to be added to
 # zle-line-init and zle-line-finish respectively
 if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
-    function enter-kbd-transmit-mode () {
+    enter-kbd-transmit-mode () {
         emulate -L zsh
         printf '%s' ${terminfo[smkx]}
     }
-    function leave-kbd-transmit-mode () {
+    leave-kbd-transmit-mode () {
         emulate -L zsh
         printf '%s' ${terminfo[rmkx]}
     }
 else
-    function enter-kbd-transmit-mode leave-kbd-transmit-mode () { : }
+    enter-kbd-transmit-mode leave-kbd-transmit-mode () { : }
 fi
 # }}}
 
@@ -196,7 +196,7 @@ add-zsh-hook precmd vcs_info
 
 # {{{ indicator for python virtual environments
 export VIRTUAL_ENV_DISABLE_PROMPT=yes
-function virtenv_indicator {
+virtenv_indicator () {
     if [[ -z $VIRTUAL_ENV ]]; then
         psvar[1]=''
     else
@@ -299,7 +299,7 @@ add-zsh-hook precmd pipestatus
 
 # {{{ indicator whether zle is in vicmd mode
 vicmdindicator=' '
-function zle-keymap-select {
+zle-keymap-select () {
     case $KEYMAP in
         vicmd) vicmdindicator='%S%Bv%s';;
         *) vicmdindicator=' ';;
@@ -348,11 +348,11 @@ RPROMPT2=$'<%(!.%F{red}.%F{green})%^%b%f%k'
 }
 
 # {{{ zle line editor initialization
-function zle-line-init {
+zle-line-init () {
     zle zle-keymap-select
     enter-kbd-transmit-mode
 }
-function zle-line-finish {
+zle-line-finish () {
     leave-kbd-transmit-mode
 }
 zle -N zle-line-init
@@ -360,7 +360,7 @@ zle -N zle-line-finish
 # }}}
 
 # {{{ set title on terminal (xterm, tmux, screen, rxvt)
-function xtermtitle() {
+xtermtitle() {
     # escape '%' chars in $1, make nonprintables visible
 
     # Truncate command, and join lines.

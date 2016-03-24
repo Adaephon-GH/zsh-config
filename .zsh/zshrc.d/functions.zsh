@@ -1,4 +1,4 @@
-function termcolors () 
+termcolors () 
 {
     print TERM
 
@@ -49,13 +49,13 @@ function termcolors ()
     done
 }
 
-function mkcd () {
+mkcd () {
     mkdir "$@"
     cd "$1"
 }
 compdef _mkdir mkcd
 
-function alertme () {
+alertme () {
     local t=$1
     shift
     at $t <<EOM
@@ -68,7 +68,7 @@ EOM
 for config_dir in "${HOME}/config.git"/*-config
 do
     local git_name="${${config_dir##*/}%-config}-git"
-    function "${git_name}" () {
+    "${git_name}" () {
         git -C "${HOME}/config.git/${0%-git}-config" "$@"
     }
     compdef '_dispatch git git' ${git_name}
