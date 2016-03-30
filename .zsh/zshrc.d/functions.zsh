@@ -63,14 +63,16 @@ EOM
 }
 
 # define git functions for all configurations in ~/config.git
-for config_dir in "${HOME}/config.git"/*-config
-do
-    local git_name="${${config_dir##*/}%-config}-git"
-    "${git_name}" () {
+function {
+    local config_dirs=(${HOME}/config.git/*-config)
+    local git_names=(${${config_dirs##*/}/%-config/-git})
+    echo $git_names
+    $git_names () {
         git -C "${HOME}/config.git/${0%-git}-config" "$@"
     }
-    compdef '_dispatch git git' ${git_name}
-done
+    compdef '_dispatch git git' $git_names
+}
+
 
 # run git commands on all git repositories directly inside the current directory
 subdirgit () {
