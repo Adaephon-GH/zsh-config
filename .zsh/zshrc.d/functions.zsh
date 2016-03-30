@@ -66,7 +66,6 @@ EOM
 function {
     local config_dirs=(${HOME}/config.git/*-config)
     local git_names=(${${config_dirs##*/}/%-config/-git})
-    echo $git_names
     $git_names () {
         git -C "${HOME}/config.git/${0%-git}-config" "$@"
     }
