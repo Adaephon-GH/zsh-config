@@ -318,7 +318,7 @@ PINFO=(
     date        $'%b%F{cyan}%*'
     user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
     pipestatus  $'%(?.${pipestatuscolor}.%B%F{red})\u2514\u2500\u2562 $pipestatus_str \u255f${(r:$COLUMNS-8-$#pipestatus_str::\u2500:)}\u2518 '
-    pwd         $'%B%F{blue}< %~ >%f%b'
+    pwd         $'%B%F{blue}< %(6~|%-2~%b/…/%B%F{blue}%3~|%4~) >%f%b'
     jobs        $'%(1j. %B%F{yellow}(%j job%(2j.s.))%f%b.)'
     shlvl       $'%(2L. %F{magenta}#%L%f.)'
     histnum     $'%b%(2V.%(!.%F{red}.%F{yellow}).%(!.%F{red}.%F{green}))%h'
