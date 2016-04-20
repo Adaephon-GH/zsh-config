@@ -457,4 +457,5 @@ reload-config () {
     print -Pn $'\e[s\e[F\e[$[COLUMNS-$#text]C%F{cyan}$text%f\e[u'
 }
 zle -N reload-config
+bindkey '^[R' reload-config
 bindkey '^X^?' reload-config
