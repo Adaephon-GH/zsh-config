@@ -309,6 +309,26 @@ zle-keymap-select () {
 zle -N zle-keymap-select
 # }}}
 
+# {{{ set alert on terminals after long running processes finish and log running time
+typeset -i LONGRUNTIME=60
+typeset -F SECONDS
+typeset -F 1 cmd_starttime cmd_runtime
+
+save_starttime () {
+    cmd_starttime=$SECONDS
+}
+
+set_longrunning_alert () {
+    cmd_runtime=SECONDS-cmd_starttime
+    if ((cmd_runtime >= LONGRUNTIME)); then
+        print "\a"
+    fi
+}
+
+add-zsh-hook preexec save_starttime
+add-zsh-hook precmd set_longrunning_alert
+# }}}
+
 () { # local scope
 local -A PINFO
 local top middle bottom invisible middlecontent
@@ -400,23 +420,6 @@ case $TERM in
         add-zsh-hook preexec xtermtitle_pe
         ;;
 esac
-# }}}
-
-# {{{ set alert on terminals after long running processes finish
-typeset -i LONGRUNTIME=60
-
-save_starttime () {
-    starttime=$SECONDS
-}
-
-set_longrunning_alert () {
-    if ((LONGRUNTIME > 0 && SECONDS - starttime >= LONGRUNTIME)); then
-        print "\a"
-    fi
-}
-
-add-zsh-hook preexec save_starttime
-add-zsh-hook precmd set_longrunning_alert
 # }}}
 
 histignore() {
