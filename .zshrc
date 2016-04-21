@@ -49,6 +49,7 @@ zstyle ':completion:*:processes' list-colors '=(#b) #([0-9]#)*=0=00;32'
 ZSH_SPACE_SUFFIX_CHARS=$'|&'
 
 setopt magicequalsubst
+setopt globcomplete
 # }}}
 
 # {{{ General options: Globbing, History
