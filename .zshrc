@@ -432,6 +432,8 @@ histignore() {
 
 # do automatic time for processes which use more CPU time
 REPORTTIME=10
+# extend and colorize time stats
+TIMEFMT=$'\e[106;30m %J  %MMB maxmem %U user %S system %P cpu %*E total \e[0m'
 
 # ZLE builtin highlighting (comment default if using zsh-syntax-highlighting)
 zle_highlight[(r)default:*]="default:fg=white,bold" 
