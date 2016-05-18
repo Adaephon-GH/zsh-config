@@ -196,7 +196,38 @@ add-zsh-hook precmd vcs_info
 # }}}
 
 # {{{ indicator for python virtual environments
+# Prevent virtualenv from setting prompt on its own
 export VIRTUAL_ENV_DISABLE_PROMPT=yes
+
+pyenv_indicator () {
+    local version file origin
+
+    if [[ -z $PYENV_ROOT ]]; then
+        psvar[1]=''
+        return
+    fi
+
+    version=(${(s.:.)$(pyenv version-name)})
+
+    if [[ $version == "system" ]]; then
+        psvar[1]=''
+        return
+    fi
+
+    if [[ -n $PYENV_VERSION ]]; then
+        origin="S"
+    else
+        file=$(pyenv version-file)
+        if [[ $file == "$PYENV_ROOT/version" ]]; then
+            origin="G"
+        else
+            origin="L"
+        fi
+    fi
+
+    psvar[1]="$version ($origin)"
+}
+
 virtenv_indicator () {
     if [[ -z $VIRTUAL_ENV ]]; then
         psvar[1]=''
@@ -205,7 +236,11 @@ virtenv_indicator () {
     fi
 }
 
-add-zsh-hook precmd virtenv_indicator
+if [[ -d $PYENV_ROOT ]]; then
+    add-zsh-hook precmd pyenv_indicator
+else
+    add-zsh-hook precmd virtenv_indicator
+fi
 # }}}
 
 # {{{ function to determine if login is local or remote
