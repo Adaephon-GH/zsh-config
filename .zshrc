@@ -203,7 +203,12 @@ pyenv_indicator () {
     local version file origin
 
     if [[ -z $PYENV_ROOT ]]; then
-        psvar[1]=''
+        #virtenv fallback
+        if [[ -z $VIRTUAL_ENV ]]; then
+            psvar[1]=''
+        else
+            psvar[1]=${VIRTUAL_ENV##*/}
+        fi
         return
     fi
 
@@ -215,32 +220,20 @@ pyenv_indicator () {
     fi
 
     if [[ -n $PYENV_VERSION ]]; then
-        origin="S"
+        origin="s"
     else
         file=$(pyenv version-file)
         if [[ $file == "$PYENV_ROOT/version" ]]; then
-            origin="G"
+            origin="g"
         else
-            origin="L"
+            origin="l"
         fi
     fi
 
-    psvar[1]="$version ($origin)"
+    psvar[1]=" $version |$origin"
 }
 
-virtenv_indicator () {
-    if [[ -z $VIRTUAL_ENV ]]; then
-        psvar[1]=''
-    else
-        psvar[1]=${VIRTUAL_ENV##*/}
-    fi
-}
-
-if [[ -d $PYENV_ROOT ]]; then
-    add-zsh-hook precmd pyenv_indicator
-else
-    add-zsh-hook precmd virtenv_indicator
-fi
+add-zsh-hook precmd pyenv_indicator
 # }}}
 
 # {{{ function to determine if login is local or remote
@@ -375,8 +368,8 @@ PINFO=(
     user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
     cmdstatus  $'%(?.${pipestatuscolor}.%B%F{red})└─╢ $pipestatus_str ╟─╢ $cmd_runtime ╟${(r:$COLUMNS-13-$#pipestatus_str-$#cmd_runtime::─:)}┘ '
     pwd         $'%F{blue}< %(6~|%-2~%F{blue}%B/…/%b%F{blue}%3~|%6~) >%f%b'
-    jobs        $'%(1j. %B%F{yellow}(%j job%(2j.s.))%f%b.)'
-    shlvl       $'%(2L. %F{magenta}#%L%f.)'
+    jobs        $'%(1j.%B%F{cyan}(%j job%(2j.s.))%f%b .)'
+    shlvl       $'%(2L.%F{magenta}#%L%f.)'
     histnum     $'%b%(2V.%(!.%F{red}.%F{yellow}).%(!.%F{red}.%F{green}))%h'
     vim         $'${vicmdindicator}'
     prompt      $'%#%b%f%k '
@@ -385,8 +378,8 @@ PINFO=(
 )
 
 top="$PINFO[cmdstatus]"
-middleleft="$PINFO[virtenv]$PINFO[date] $PINFO[user-host] $PINFO[pwd]"
-middleright="$PINFO[jobs]$PINFO[shlvl] "
+middleleft="$PINFO[date] $PINFO[user-host] $PINFO[pwd]"
+middleright="$PINFO[virtenv]$PINFO[jobs]$PINFO[shlvl] "
 bottom="$PINFO[histnum]$PINFO[vim]$PINFO[prompt]"
 
 invisible='%([BSUbfksu]|([FBK]|){*})'
