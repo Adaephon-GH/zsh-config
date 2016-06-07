@@ -85,3 +85,47 @@ subdirgit () {
     done
 }
 compdef '_dispatch git git' subdirgit
+
+
+temp-ssh-agent () {
+    case $1 in 
+        enable) 
+            if [[ -n $OLD_SSH_AUTH_SOCK ]]
+            then
+                echo "It seems there is already an temporary SSH agent running" >&2
+                return 2
+            fi
+            export OLD_SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+            if [[ -n $SSH_AGENT_PID ]]
+            then
+                export OLD_SSH_AGENT_PID=$SSH_AGENT_PID
+            fi
+            eval $(ssh-agent -s)
+            ;;
+        disable)
+            if [[ -z $OLD_SSH_AUTH_SOCK ]]
+            then
+                echo "It seems that there is no temporary SSH agent running" >&2
+                return 2
+            fi
+            export SSH_AUTH_SOCK=$OLD_SSH_AUTH_SOCK
+            unset OLD_SSH_AUTH_SOCK
+            if [[ -n $SSH_AGENT_PID ]]
+            then
+                kill $SSH_AGENT_PID
+                unset SSH_AGENT_PID
+            fi
+            if [[ -n $OLD_SSH_AGENT_PID ]]
+            then
+                export SSH_AGENT_PID=$OLD_SSH_AGENT_PID
+                unset OLD_SSH_AGENT_PID
+            fi
+            ;;
+        *)
+            echo "Usage: $0 enable|disable" >&2
+    esac
+}
+
+
+
+
