@@ -85,7 +85,7 @@ bindkey -a "^[^[" redisplay
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey "^[v" edit-command-line
-bindkey -a "v" edit-command-line
+bindkey -a "^[v" edit-command-line
 
 bindkey '^P' predict-toggle
 
