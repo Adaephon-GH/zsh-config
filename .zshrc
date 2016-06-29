@@ -464,25 +464,6 @@ REPORTTIME=10
 # extend and colorize time stats
 TIMEFMT=$'\e[106;30m %J  %MMB maxmem %U user %S system %P cpu %*E total \e[0m'
 
-# ZLE builtin highlighting (comment default if using zsh-syntax-highlighting)
-zle_highlight[(r)default:*]="default:fg=white,bold" 
-zle_highlight[(r)isearch:*]="isearch:fg=yellow,standout,bold"
-zle_highlight[(r)suffix:*]="suffix:fg=magenta,bold"
-
-# disable until https://github.com/zsh-users/zsh-syntax-highlighting/issues/108 is solved
-#source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#source ~/.zsh/zsh-syntax-highlighting.conf
-
-# load additional configuration
-for extraconf in ~/.zsh/zshrc.d ~/.zsh.local/zshrc.d; do
-    if [[ -d $extraconf ]]; then
-        for file in ${extraconf}/*.zsh; do
-            source "$file"
-        done
-        unset file
-    fi
-done
-
 # enable reloading of config with Ctrl+Alt+R
 reload-config () {
     #print -Pn $'\e[s\e[2C%B%F{cyan}--> reloading configuration <--%b%f\e[u'
@@ -493,3 +474,24 @@ reload-config () {
 zle -N reload-config
 bindkey '^[R' reload-config
 bindkey '^X^?' reload-config
+
+# load additional configuration
+for extraconf in ~/.zshrc.d ~/.zsh.local.d; do
+    if [[ -d $extraconf ]]; then
+        for file in ${extraconf}/*.zsh; do
+            source "$file"
+        done
+        unset file
+    fi
+done
+
+## ZLE builtin highlighting (comment default if using zsh-syntax-highlighting)
+# zle_highlight[(r)default:*]="default:fg=white,bold" 
+# zle_highlight[(r)isearch:*]="isearch:fg=yellow,standout,bold"
+# zle_highlight[(r)suffix:*]="suffix:fg=magenta,bold"
+
+## disable until https://github.com/zsh-users/zsh-syntax-highlighting/issues/108 is solved
+
+# source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source ~/.zsh/zsh-syntax-highlighting.conf
+
