@@ -1,7 +1,5 @@
 load_zsl () {
     local ZSL_SCRIPT="${ZDOTDIR:-$HOME}/.zshrc.d/zsh-syntax-highlighting.git/zsh-syntax-highlighting.zsh" 
-    echo $ZSL_SCRIPT
-    echo ${(%):-%N}
     if [[ ! -e $ZSL_SCRIPT ]] ; then
         return 1
     fi
