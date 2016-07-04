@@ -67,7 +67,7 @@ setopt autopushd
 setopt pushdignoredups
 
 ## History control
-HISTFILE=~/.histfile
+HISTFILE=${ZDOTDIR:-$HOME}/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
 # either incappendhistory or sharehistory
@@ -468,7 +468,7 @@ TIMEFMT=$'\e[106;30m %J  %MMB maxmem %U user %S system %P cpu %*E total \e[0m'
 reload-config () {
     #print -Pn $'\e[s\e[2C%B%F{cyan}--> reloading configuration <--%b%f\e[u'
     local text='--> configuration reloaded '
-    source ~/.zshrc
+    source ${ZDOTDIR:-$HOME}/.zshrc
     print -Pn $'\e[s\e[F\e[$[COLUMNS-$#text]C%F{cyan}$text%f\e[u'
 }
 zle -N reload-config
@@ -476,7 +476,7 @@ bindkey '^[R' reload-config
 bindkey '^X^?' reload-config
 
 # load additional configuration
-for extraconf in ~/.zshrc.d ~/.zsh.local.d; do
+for extraconf in ${ZDOTDIR:-$HOME}/.zshrc.d ${ZDOTDIR:-$HOME}/.zsh.local.d; do
     if [[ -d $extraconf ]]; then
         for file in ${extraconf}/*.zsh; do
             source "$file"
