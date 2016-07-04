@@ -2,7 +2,7 @@
 
 # load dircolors here
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    test -r ${HOME}/.dircolors && eval "$(dircolors -b ${HOME}/.dircolors)" || eval "$(dircolors -b)"
 fi
 
 # addons
@@ -67,7 +67,7 @@ setopt autopushd
 setopt pushdignoredups
 
 ## History control
-HISTFILE=~/.histfile
+HISTFILE=${ZDOTDIR:-$HOME}/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
 # either incappendhistory or sharehistory
@@ -464,17 +464,19 @@ REPORTTIME=10
 # extend and colorize time stats
 TIMEFMT=$'\e[106;30m %J  %MMB maxmem %U user %S system %P cpu %*E total \e[0m'
 
-# ZLE builtin highlighting (comment default if using zsh-syntax-highlighting)
-zle_highlight[(r)default:*]="default:fg=white,bold" 
-zle_highlight[(r)isearch:*]="isearch:fg=yellow,standout,bold"
-zle_highlight[(r)suffix:*]="suffix:fg=magenta,bold"
-
-# disable until https://github.com/zsh-users/zsh-syntax-highlighting/issues/108 is solved
-#source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#source ~/.zsh/zsh-syntax-highlighting.conf
+# enable reloading of config with Ctrl+Alt+R
+reload-config () {
+    #print -Pn $'\e[s\e[2C%B%F{cyan}--> reloading configuration <--%b%f\e[u'
+    local text='--> configuration reloaded '
+    source ${ZDOTDIR:-$HOME}/.zshrc
+    print -Pn $'\e[s\e[F\e[$[COLUMNS-$#text]C%F{cyan}$text%f\e[u'
+}
+zle -N reload-config
+bindkey '^[R' reload-config
+bindkey '^X^?' reload-config
 
 # load additional configuration
-for extraconf in ~/.zsh/zshrc.d ~/.zsh.local/zshrc.d; do
+for extraconf in ${ZDOTDIR:-$HOME}/.zshrc.d ${ZDOTDIR:-$HOME}/.zshrc.local.d; do
     if [[ -d $extraconf ]]; then
         for file in ${extraconf}/*.zsh; do
             source "$file"
@@ -482,14 +484,3 @@ for extraconf in ~/.zsh/zshrc.d ~/.zsh.local/zshrc.d; do
         unset file
     fi
 done
-
-# enable reloading of config with Ctrl+Alt+R
-reload-config () {
-    #print -Pn $'\e[s\e[2C%B%F{cyan}--> reloading configuration <--%b%f\e[u'
-    local text='--> configuration reloaded '
-    source ~/.zshrc
-    print -Pn $'\e[s\e[F\e[$[COLUMNS-$#text]C%F{cyan}$text%f\e[u'
-}
-zle -N reload-config
-bindkey '^[R' reload-config
-bindkey '^X^?' reload-config
