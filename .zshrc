@@ -306,13 +306,13 @@ psvar[2]=${$(logintype)#local}
 # {{{ get exit codes of previous command or pipeline
 pipestatus () {
     pipestatus_=($pipestatus)
-    pipestatuscolor='%B%F{green}'
+    pipestatuscolor='%K{green}%F{black}'
     local excode
     for (( ec=1 ; ec <= $#pipestatus_ ; ec++ )) do
         if [ $pipestatus_[ec] -eq 0 ] ; then
             pipestatus_[ec]="ok"
         else
-            pipestatuscolor='%B%F{yellow}' 
+            pipestatuscolor='%K{yellow}%F{black}' 
             if [ $pipestatus_[ec] -gt 128 ] ; then
                 pipestatus_[ec]=$(kill -l $pipestatus_[ec])
             fi
@@ -366,7 +366,7 @@ PINFO=(
     virtenv     $'%(1V.%F{yellow}%B[%1v] %b%f.)'
     date        $'%b%F{cyan}%*'
     user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
-    cmdstatus  $'%(?.${pipestatuscolor}.%B%F{red})└─╢ $pipestatus_str ╟─╢ $cmd_runtime ╟${(r:$COLUMNS-13-$#pipestatus_str-$#cmd_runtime::─:)}┘ '
+    cmdstatus  $'%(?.${pipestatuscolor}.%K{red}%F{black})└─╢ $pipestatus_str ╟─╢ $cmd_runtime ╟${(r:$COLUMNS-13-$#pipestatus_str-$#cmd_runtime::─:)}┘ '
     pwd         $'%F{blue}< %(6~|%-2~%F{blue}%B/…/%b%F{blue}%3~|%6~) >%f%b'
     jobs        $'%(1j.%B%F{cyan}(%j job%(2j.s.))%f%b .)'
     shlvl       $'%(2L.%F{magenta}#%L%f.)'
