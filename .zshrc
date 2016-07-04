@@ -484,14 +484,3 @@ for extraconf in ${ZDOTDIR:-$HOME}/.zshrc.d ${ZDOTDIR:-$HOME}/.zshrc.local.d; do
         unset file
     fi
 done
-
-## ZLE builtin highlighting (comment default if using zsh-syntax-highlighting)
-# zle_highlight[(r)default:*]="default:fg=white,bold" 
-# zle_highlight[(r)isearch:*]="isearch:fg=yellow,standout,bold"
-# zle_highlight[(r)suffix:*]="suffix:fg=magenta,bold"
-
-## disable until https://github.com/zsh-users/zsh-syntax-highlighting/issues/108 is solved
-
-# source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# source ~/.zsh/zsh-syntax-highlighting.conf
-
