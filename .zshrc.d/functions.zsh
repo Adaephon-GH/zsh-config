@@ -62,7 +62,7 @@ EOM
 
 }
 
-# define git functions for all configurations in ~/config.git
+# define git functions for all configurations in ${HOME}/config.git
 function {
     local config_dirs=(${HOME}/config.git/*-config)
     local git_names=(${${config_dirs##*/}/%-config/-git})
