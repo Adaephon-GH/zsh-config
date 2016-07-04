@@ -476,7 +476,7 @@ bindkey '^[R' reload-config
 bindkey '^X^?' reload-config
 
 # load additional configuration
-for extraconf in ${ZDOTDIR:-$HOME}/.zshrc.d ${ZDOTDIR:-$HOME}/.zsh.local.d; do
+for extraconf in ${ZDOTDIR:-$HOME}/.zshrc.d ${ZDOTDIR:-$HOME}/.zshrc.local.d; do
     if [[ -d $extraconf ]]; then
         for file in ${extraconf}/*.zsh; do
             source "$file"
