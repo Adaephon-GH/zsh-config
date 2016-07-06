@@ -1,4 +1,4 @@
 if [[ $TERM == xterm-termite ]]; then
     . /etc/profile.d/vte.sh
-    __vte_osc7
+    whence __vte_osc7 > /dev/null && __vte_osc7
 fi
