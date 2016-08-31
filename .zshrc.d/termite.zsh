@@ -1,4 +1,8 @@
+VTE_SH=/etc/profile.de/vte.sh
 if [[ $TERM == xterm-termite ]]; then
-    . /etc/profile.d/vte.sh
-    whence __vte_osc7 > /dev/null && __vte_osc7
+    if [[ -e $VTE_SH ]]; then
+        . $VTE_SH
+        whence __vte_osc7 > /dev/null && __vte_osc7
+    fi
 fi
+unset VTE_SH
