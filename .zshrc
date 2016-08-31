@@ -415,7 +415,7 @@ xtermtitle() {
     # Truncate command, and join lines.
 
     local preamble="$(print -Pn -- '%y %n@%m: < %~ >')"
-    local cl="${1:-}"
+    local cl="${1:- }"
     local cmd="${${cl%% *}##*\/}"
     cl=$(print -nr -- "${cl:0:40}${${cl:40}:+...}" | tr "\n\t\v\f\r" " ") # shorten to 40 chars and remove fancy whitespace
     cl=${(V)cl}   # escape print specials
