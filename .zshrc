@@ -382,7 +382,7 @@ middleleft="$PINFO[date] $PINFO[user-host] $PINFO[pwd]"
 middleright="$PINFO[virtenv]$PINFO[jobs]$PINFO[shlvl] "
 bottom="$PINFO[histnum]$PINFO[vim]$PINFO[prompt]"
 
-invisible='%([BSUbfksu]|([FBK]|){*})'
+invisible='%([BSUbfksu]|([FK]|){*})'
 
 middleleftcontent=${(S)middleleft//$~invisible}
 middlerightcontent=${(S)middleright//$~invisible}
