@@ -71,9 +71,14 @@ bindkey "^[/" _history-complete-older
 bindkey "^[~" _bash_complete-word
 
 bindkey "^[#" pound-insert
-bindkey "^Q" push-line-or-edit
-bindkey "^[q" push-line-or-edit
+bindkey "^[q" push-line
 bindkey "^[Q" push-line-or-edit
+push-line-to-history () {
+    print -S $BUFFER
+    BUFFER=
+}
+zle -N push-line-to-history
+bindkey "^Xq" push-line-to-history
 
 bindkey "^[" vi-cmd-mode
 bindkey -a "^[" vi-add-next
