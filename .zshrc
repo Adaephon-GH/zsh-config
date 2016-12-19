@@ -366,7 +366,7 @@ PINFO=(
     virtenv     $'%(1V.%F{yellow}%B[%1v] %b%f.)'
     date        $'%b%F{cyan}%*'
     user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
-    cmdstatus  $'%(?.${pipestatuscolor}.%K{red}%F{black})└─╢ $pipestatus_str ╟─╢ $cmd_runtime ╟${(r:$COLUMNS-13-$#pipestatus_str-$#cmd_runtime::─:)}┘ '
+    cmdstatus   $'%(?.${pipestatuscolor}.%K{red}%F{black})└─╢ $pipestatus_str ╟─╢ $cmd_runtime ╟${(r:$COLUMNS-13-$#pipestatus_str-$#cmd_runtime::─:)}┘%k%f '
     pwd         $'%F{blue}< %(6~|%-2~%F{blue}%B/…/%b%F{blue}%3~|%6~) >%f%b'
     jobs        $'%(1j.%B%F{cyan}(%j job%(2j.s.))%f%b .)'
     shlvl       $'%(2L.%F{magenta}#%L%f.)'
