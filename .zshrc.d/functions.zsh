@@ -77,9 +77,7 @@ function {
 subdirgit () {
     for dir in */.git(/N)
     do
-        print -P "%F{yellow}${(r,${#dir:h} + 8,,#,):-}%f"
-        print -P "%F{yellow}### %B${dir:h}%b%F{yellow} ###%f"
-        print -P "%F{yellow}${(r,${#dir:h} + 8,,#,):-}%f"
+        print -P "%F{black}%K{yellow}### ${dir:h} ###%f%k"
         git -C ${dir:h} $@
         print
     done
