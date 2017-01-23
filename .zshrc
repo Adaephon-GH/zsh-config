@@ -363,7 +363,7 @@ local -A PINFO
 local top middle bottom invisible middlecontent
 
 PINFO=(
-    virtenv     $'%(1V.%F{yellow}%B[%1v] %b%f.)'
+    virtenv     $'%(1V.%F{yellow}%B%S[%1v]%s%b%f .)'
     date        $'%b%F{cyan}%*'
     user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
     cmdstatus   $'%(?.${pipestatuscolor}.%K{red}%F{black})└─╢ $pipestatus_str ╟─╢ $cmd_runtime ╟${(r:$COLUMNS-13-$#pipestatus_str-$#cmd_runtime::─:)}┘%k%f '
