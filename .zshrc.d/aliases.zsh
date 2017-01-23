@@ -43,3 +43,5 @@ alias -g NPK='-o PubkeyAuthentication=no'
 alias ssh-temp='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o PubkeyAuthentication=no'
 
 alias lynx='lynx -display_charset=utf-8'
+
+alias snek=ipython
