@@ -48,7 +48,7 @@ termcolors ()
 }
 
 mkcd () {
-    mkdir "$@"
+    mkdir -p "$1"
     cd "$1"
 }
 compdef _mkdir mkcd
