@@ -106,3 +106,11 @@ fancy-ctrl-z () {
 }
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
+
+# Ease use of `insert-last-word` with negative numeric arguments
+# Uses 0-indexing like History Expansion
+inverse-insert-last-word () {
+  zle insert-last-word -- -1 $(( ${NUMERIC:-0} + 1 ))
+}
+zle -N inverse-insert-last-word
+bindkey '^[•' inverse-insert-last-word '^[j' inverse-insert-last-word
