@@ -124,6 +124,10 @@ temp-ssh-agent () {
     esac
 }
 
-
-
-
+serfile () {
+    setopt extended_glob
+    local name=${1:-}
+    local -a files
+    files=( ${name}<1->(N) )
+    echo $name$(( ${files[-1]#$name} + 1 ))
+}
