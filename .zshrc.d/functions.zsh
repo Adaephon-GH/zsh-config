@@ -128,6 +128,6 @@ serfile () {
     setopt extended_glob
     local name=${1:-}
     local -a files
-    files=( ${name}<1->(N) )
+    files=( ${name}<1->(Nn) )
     echo $name$(( ${files[-1]#$name} + 1 ))
 }
