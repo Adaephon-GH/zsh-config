@@ -127,7 +127,8 @@ temp-ssh-agent () {
 serfile () {
     setopt extended_glob
     local name=${1:-}
+    local pad=${2:-4}
     local -a files
     files=( ${name}<1->(Nn) )
-    echo $name$(( ${files[-1]#$name} + 1 ))
+    echo $name${(l:$pad::0:)$(( ${files[-1]#$name} + 1 ))}
 }
