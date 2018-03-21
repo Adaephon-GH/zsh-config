@@ -1,4 +1,4 @@
-if [ -x /usr/bin/dircolors ]; then
+if [[ -x /usr/bin/dircolors ]]; then
     alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
@@ -43,6 +43,10 @@ alias -g NKH='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
 alias ssh-temp='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o PubkeyAuthentication=no'
 
-alias lynx='lynx -display_charset=utf-8'
+if [[ -f ~/.lynx.lss ]] ; then
+    alias lynx='lynx -display_charset=utf-8 -lss=~/.lynx.lss'
+else
+    alias lynx='lynx -display_charset=utf-8'
+fi
 
 alias snek=ipython
