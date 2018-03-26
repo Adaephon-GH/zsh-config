@@ -331,8 +331,14 @@ add-zsh-hook precmd pipestatus
 vicmdindicator=' '
 zle-keymap-select () {
     case $KEYMAP in
-        vicmd) vicmdindicator='%S%Bv%s';;
-        *) vicmdindicator=' ';;
+        vicmd) 
+            vicmdindicator='%S%Bv%s'
+            echo '\e[2 q'
+            ;;
+        *) 
+            vicmdindicator=' '
+            echo '\e[0 q'
+            ;;
     esac
     zle reset-prompt
 }
