@@ -18,7 +18,8 @@ zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*' file-sort name
 zstyle ':completion:*' format '%F{blue}%U>>> %d%u%f'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' ignore-parents parent pwd .. directory
+#zstyle ':completion:*' ignore-parents parent pwd .. directory
+zstyle ':completion:*:(cd|mv|cp):*' ignore-parents parent pwd
 zstyle ':completion:*:*:-command-:*:*' ignored-patterns '_*'
 zstyle ':completion:*:complete:-tilde-:*' tag-order 'named-directories directory-stack' users
 zstyle ':completion:*' insert-unambiguous true
