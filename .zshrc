@@ -333,11 +333,11 @@ zle-keymap-select () {
     case $KEYMAP in
         vicmd) 
             vicmdindicator='%S%Bv%s'
-            echo '\e[2 q'
+            print -n '\e[2 q'
             ;;
         *) 
             vicmdindicator=' '
-            echo '\e[0 q'
+            print -n '\e[0 q'
             ;;
     esac
     zle reset-prompt
