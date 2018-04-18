@@ -373,7 +373,7 @@ PINFO=(
     virtenv     $'%(1V.%F{yellow}%B%S[%1v]%s%b%f .)'
     date        $'%b%F{cyan}%*'
     user-host   $'%b%(2V.%S%(!.%F{red}%K{11} %m %f%k.%F{yellow} %n@%m %f)%s.%(!.%F{red}%m%f.%F{green}%n@%m))'
-    cmdstatus   $'%(?.${pipestatuscolor}.%K{red}%F{black})└─╢ $pipestatus_str ╟─╢ $cmd_runtime ╟${(r:$COLUMNS-13-$#pipestatus_str-$#cmd_runtime::─:)}┘%k%f '
+    cmdstatus   $'%(?.${pipestatuscolor}.%K{red}%F{black})└─╢ $pipestatus_str ╟─╢ $cmd_runtime ╟${(r:$COLUMNS-13-$#pipestatus_str-$#cmd_runtime::─:)}┘%k%f'
     pwd         $'%F{blue}< %(6~|%-2~%F{blue}%B/…/%b%F{blue}%3~|%6~) >%f%b'
     jobs        $'%(1j.%B%F{cyan}(%j job%(2j.s.))%f%b .)'
     shlvl       $'%(2L.%F{magenta}#%L%f.)'
@@ -386,7 +386,7 @@ PINFO=(
 
 top="$PINFO[cmdstatus]"
 middleleft="$PINFO[date] $PINFO[user-host] $PINFO[pwd]"
-middleright="$PINFO[virtenv]$PINFO[jobs]$PINFO[shlvl] "
+middleright="$PINFO[virtenv]$PINFO[jobs]$PINFO[shlvl]"
 bottom="$PINFO[histnum]$PINFO[vim]$PINFO[prompt]"
 
 invisible='%([BSUbfksu]|([FK]|){*})'
@@ -394,7 +394,9 @@ invisible='%([BSUbfksu]|([FK]|){*})'
 middleleftcontent=${(S)middleleft//$~invisible}
 middlerightcontent=${(S)middleright//$~invisible}
 
-PROMPT="$top$middleleft\${(r,\$COLUMNS - \${#\${(%):-$middleleftcontent$middlerightcontent}} % \$COLUMNS,)}$middleright$bottom"
+PROMPT="$top
+$middleleft\${(r,\$COLUMNS - 1 -\${#\${(%):-$middleleftcontent$middlerightcontent}} % \$COLUMNS,)}$middleright
+$bottom"
 
 PROMPT2="$PINFO[histnum]$PINFO[indent]$PINFO[vim]$PINFO[prompt2]"
 
