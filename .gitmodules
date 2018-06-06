@@ -1,3 +1,6 @@
 [submodule ".zshrc.d/zsh-syntax-highlighting.git"]
 	path = .zshrc.d/zsh-syntax-highlighting.git
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule ".zshrc.d/fast-syntax-highlighting"]
+	path = .zshrc.d/fast-syntax-highlighting
+	url = https://github.com/zdharma/fast-syntax-highlighting.git
