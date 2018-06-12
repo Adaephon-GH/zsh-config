@@ -34,7 +34,7 @@ zstyle ':completion:*' preserve-prefix '//[^/]##/'
 zstyle ':completion:*' rehash true
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*' verbose true
-zstyle :compinstall filename '/home/mruf/.zshrc'
+zstyle :compinstall filename "${ZDOTDIR:-HOME}/.zshrc"
 
 autoload -Uz compinit
 compinit
