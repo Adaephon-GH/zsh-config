@@ -97,13 +97,13 @@ zstyle ':verbose' toggle true
 unsetopt beep
 setopt interactivecomments
 setopt rematchpcre
-#setopt printexitvalue
+setopt noclobber
+setopt appendcreate
 
 ## job control
 setopt autocontinue
 
 ## prompt
-#setopt promptbang
 setopt promptsubst
 setopt promptpercent
 
