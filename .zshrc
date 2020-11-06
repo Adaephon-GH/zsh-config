@@ -203,31 +203,30 @@ export VIRTUAL_ENV_DISABLE_PROMPT=yes
 pyenv_indicator () {
     local version file origin
 
-    if [[ -z $PYENV_ROOT ]]; then
-        #virtenv fallback
-        if [[ -z $VIRTUAL_ENV ]]; then
-            psvar[1]=''
-        else
-            psvar[1]=${VIRTUAL_ENV##*/}
-        fi
+    # Explicitly set virtual envs have priority over anythin set by pyenv
+    version=(${VIRTUAL_ENV##*/} ${(s.:.)$(pyenv version-name)})
+    version=${version:#system}
+
+    # Hide indicator and avoid extra work if there are no versions to show
+    if [[ -z $version ]]; then
+        psvar[1]=""
         return
     fi
 
-    version=(${(s.:.)$(pyenv version-name)})
-
-    if [[ $version == "system" ]]; then
-        psvar[1]=''
-        return
-    fi
-
-    if [[ -n $PYENV_VERSION ]]; then
+    if [[ -n $VIRTUAL_ENV ]]; then
+        # A non-pyenv virtual env is active
+        origin="v"
+    elif [[ -n $PYENV_VERSION ]]; then
+        # pyenv was configured on a shell level
         origin="s"
     else
         file=$(pyenv version-file)
-        if [[ $file == "$PYENV_ROOT/version" ]]; then
-            origin="g"
-        else
+        if [[ $file != "$PYENV_ROOT/version" ]]; then
+            # pyenv was configured by .python-version in some (parent-)directory
             origin="l"
+        else
+            # pyenv uses global settings
+            origin="g"
         fi
     fi
 
