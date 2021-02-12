@@ -203,6 +203,16 @@ export VIRTUAL_ENV_DISABLE_PROMPT=yes
 pyenv_indicator () {
     local version file origin
 
+    # fallback in case pyenv is not installed
+    if [[ -z $PYENV_ROOT ]]; then
+        if [[ -z $VIRTUAL_ENV ]]; then
+            psvar[1]=''
+        else
+            psvar[1]=${VIRTUAL_ENV##*/}
+        fi
+        return
+    fi
+
     # Explicitly set virtual envs have priority over anythin set by pyenv
     version=(${VIRTUAL_ENV##*/} ${(s.:.)$(pyenv version-name)})
     version=${version:#system}
