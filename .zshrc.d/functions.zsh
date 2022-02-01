@@ -1,6 +1,6 @@
 termcolors () 
 {
-    print TERM
+    print $TERM
 
     print -P "Foreground: >█<"
     print -P "Background: >%S█%s<\n"
