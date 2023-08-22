@@ -35,7 +35,7 @@ load_zsl () {
 }
 
 load_fsh () {
-    local FSH_SCRIPT="${ZDOTDIR:-$HOME}/.zshrc.d/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" 
+    local FSH_SCRIPT="${ZDOTDIR:-$HOME}/.zshrc.d/fast-syntax-highlighting/F-Sy-H.plugin.zsh" 
     if [[ ! -e $FSH_SCRIPT ]] ; then
         return 1
     fi
