@@ -495,10 +495,8 @@ bindkey '^X^?' reload-config
 
 # load additional configuration
 for extraconf in ${ZDOTDIR:-$HOME}/.zshrc.d ${ZDOTDIR:-$HOME}/.zshrc.local.d; do
-    if [[ -d $extraconf ]]; then
-        for file in ${extraconf}/*.zsh; do
-            source "$file"
-        done
-        unset file
-    fi
+    for file in ${extraconf}/*.zsh(N); do
+        source "$file"
+    done
+    unset file
 done
