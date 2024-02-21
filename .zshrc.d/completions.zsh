@@ -5,9 +5,13 @@ if [[ $commands[terraform] ]]; then
 fi
 
 # Completion for commands that provide their own completion via
-#     COMMAND completion zsh
+#
+#     source <(COMMAND completion zsh)
+#
+# *and* where the generated completion has the name '_COMMAND'.
+#
 () {
-    local completion_providers=(helm kubectl k9s)
+    local completion_providers=(helm kubectl k9s exo)
     for cmd in ${(k)commands:*completion_providers}; do
         _$cmd () {
             source <($cmd completion zsh)
