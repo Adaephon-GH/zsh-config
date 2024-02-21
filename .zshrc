@@ -65,6 +65,7 @@ setopt braceccl
 setopt autocd
 DIRSTACKSIZE=16
 setopt autopushd
+setopt pushdminus
 setopt pushdignoredups
 
 ## History control
