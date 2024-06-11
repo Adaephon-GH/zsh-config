@@ -82,7 +82,10 @@ subdirgit () {
         print
     done
 }
-compdef '_dispatch git git' subdirgit
+psubdirgit () {
+    parallel 'print -P "%F{black}%K{yellow}### {} ###%f%k" ; git -C {} ' $@ ::: */.git(/N:h)
+}
+compdef '_dispatch git git' subdirgit psubdirgit
 
 
 temp-ssh-agent () {
