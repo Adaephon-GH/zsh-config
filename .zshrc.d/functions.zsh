@@ -53,13 +53,24 @@ mkcd () {
 }
 compdef _mkdir mkcd
 
-alertme () {
-    local t=$1
-    shift
-    at $t <<EOM
-notify-send 'ALERT $t' '$@' -u critical
-EOM
-
+alertme alertme-hp() {
+    local type=$1 time=$2 set_at=$(date +'%F %T')
+    shift 2
+    cmd=(systemd-run --user)
+    case $type in
+        at)
+            cmd+="--on-calendar=$time"
+            ;;
+        in)
+            cmd+="--on-active=$time"
+            ;;
+        *)
+            echo "Expected 'at' or 'in' as first argument" >&2
+            return 1
+            ;;
+    esac
+    [[ $0 == *-hp ]] && cmd+="--timer-property=AccuracySec=10ms"
+    $cmd notify-send "ALERT $type $time" "Set at: $set_at\n$*" -u critical
 }
 
 # define git functions for all configurations in ${HOME}/config.git
