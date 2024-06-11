@@ -135,3 +135,10 @@ serfile () {
     files=( ${name}<1->(Nn) )
     echo $name${(l:$pad::0:)$(( ${files[-1]#$name} + 1 ))}
 }
+
+seecert () {
+    host=${1:?Missing host parameter}
+    port=${2:-443}
+    openssl s_client -showcerts -servername $host -connect $host:$port <<< "Q" | openssl x509 -text
+}
+
