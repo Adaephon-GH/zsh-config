@@ -59,7 +59,7 @@ alertme alertme-hp() {
     cmd=(systemd-run --user)
     case $type in
         at)
-            cmd+="--on-calendar=$time"
+            cmd+="--on-calendar=$(date -d $time +'%F %T')"
             ;;
         in)
             cmd+="--on-active=$time"
