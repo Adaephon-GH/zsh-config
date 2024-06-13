@@ -58,6 +58,9 @@ alertme alertme-hp() {
     shift 2
     cmd=(systemd-run --user)
     case $type in
+        every)
+            cmd+="--on-calendar=$time"
+            ;;
         at)
             cmd+="--on-calendar=$(date -d $time +'%F %T')"
             ;;
