@@ -449,7 +449,7 @@ xtermtitle() {
             #print -Pn "\e_$1\e\\"   # screen location
             print -n -- "\e_$cl\e\\"   # screen location
             ;;
-        *xterm*|rxvt*)
+        *xterm*|rxvt*|alacritty)
             print -n -- "\e]2;[ZSH${TERMTITLE:+-}${TERMTITLE}] $preamble $cl\a" # plain xterm title
             ;;
     esac
@@ -464,7 +464,7 @@ xtermtitle_pe () {
 }
 
 case $TERM in
-    *xterm*|screen*|rxvt*)
+    *xterm*|screen*|rxvt*|alacritty)
         add-zsh-hook precmd xtermtitle_pc
         add-zsh-hook preexec xtermtitle_pe
         ;;
