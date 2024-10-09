@@ -9,5 +9,7 @@ unset _pyenv_root
 
 # automatically start X when logging in on VT1
 if [[ -z $DISPLAY && $XDG_VTNR -eq 1 && ! -e /tmp/.X0-lock ]]; then
-    exec startx
+    exec startx -- -dpi 144
+    # export QT_QPA_PLATFORMTHEME=qt6ct
+    # exec sway
 fi

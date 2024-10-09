@@ -159,7 +159,7 @@ tcheckcap () {
     print ' 58:5:160 ........\e[4;58:5:160mSet underline color 8-bit (160 red, colon as parameter separator)\e[0m'
     print ' 58;2;225;20;20 ..\e[4;58;2;225;20;20mSet underline color 24-bit (#E11414 red)\e[0m'
     print ' 58:2:225:20:20 ..\e[4;58:2:225:20:20mSet underline color 24-bit (#E11414 red, colon as parameter separator)\e[0m'
-    print ' 59 ............. \e[4;58;5;1m\e[59mSet default overline color\e[0m (\e[4;58;5;1mred <\e[59m> not red (probably)\e[0m)'
+    print ' 59 ............. \e[4;58;5;1m\e[59mSet default undererline color\e[0m (\e[4;58;5;1mred <\e[59m> not red (probably)\e[0m)'
     print ' 60 ............. \e[60mIdeogram underline, or right side line\e[0m'
     print ' 61 ............. \e[61mIdeogram double underline, or double line on the left side\e[0m'
     print ' 62 ............. \e[62mIdeogram overline, left side line\e[0m'
