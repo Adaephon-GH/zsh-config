@@ -307,3 +307,5 @@ seecert () {
     openssl s_client -showcerts -servername $host -connect $host:$port <<< "Q" | openssl x509 -text
 }
 
+nt () { [[ $REPLY -nt $NTREF ]] }
+ot () { [[ $REPLY -ot $OTREF ]] }
