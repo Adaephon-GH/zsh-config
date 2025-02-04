@@ -1,9 +1,18 @@
-# Terraform
-if [[ $commands[terraform] ]]; then
+# Commands that provide completion via bashcompinit
+() {
+    local completion_providers=(terraform mc mcli)
+    if [[ ${#${(k)commands:*completion_providers}} == 0 ]]; then
+        return
+    fi
     autoload -U +X bashcompinit && bashcompinit
-    complete -o nospace -C $commands[terraform] terraform
-fi
+    for cmd in ${(k)commands:*completion_providers}; do
+        complete -o nospace -C $commands[$cmd] $cmd
+    done
+}
 
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /home/mruf/.local/bin/mc mc
 # Completion for commands that provide their own completion via
 #
 #     source <(COMMAND completion zsh)
