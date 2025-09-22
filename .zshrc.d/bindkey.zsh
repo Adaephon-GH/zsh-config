@@ -114,3 +114,10 @@ inverse-insert-last-word () {
 }
 zle -N inverse-insert-last-word
 bindkey '^[•' inverse-insert-last-word '^[j' inverse-insert-last-word
+
+clear-screen-and-buffer () {
+  clear
+  zle && zle .reset-prompt && zle -R
+}
+zle -N clear-screen-and-buffer
+bindkey '^L^L^L' clear-screen-and-buffer
