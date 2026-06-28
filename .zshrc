@@ -262,7 +262,7 @@ logintype () {
                 lt="remote"
                 break
                 ;;
-            *(xterm|rxvt|dtterm|eterm|gnoterm|termite|konsole|emacs|tmux|screen)*)
+            *(xterm|rxvt|dtterm|eterm|gnoterm|termite|konsole|emacs|tmux|screen|kitty)*)
                 # Shell running from an emulator, check for local displays
                 # TODO: look for better way to determine use of terminal emulator than just listing everything
                 if [[ -n $SSH_CLIENT ]]
