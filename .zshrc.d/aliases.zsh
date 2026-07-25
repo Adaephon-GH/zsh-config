@@ -54,3 +54,5 @@ else
 fi
 
 alias snek=ipython
+
+alias claude="claude --model sonnet --effort high"
