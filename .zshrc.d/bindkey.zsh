@@ -92,8 +92,6 @@ zle -N edit-command-line
 bindkey "^[v" edit-command-line
 bindkey -a "^[v" edit-command-line
 
-bindkey '^P' predict-toggle
-
 fancy-ctrl-z () {
   if [[ $#BUFFER -eq 0 ]]; then
     echo
@@ -120,4 +118,8 @@ clear-screen-and-buffer () {
   zle && zle .reset-prompt && zle -R
 }
 zle -N clear-screen-and-buffer
-bindkey '^L^L^L' clear-screen-and-buffer
+# '^X^L' clears the screen *and* the scrollback buffer (it runs `clear`).
+# Plain '^L' keeps its default (clear-screen, scrollback preserved). The old
+# binding was '^L^L^L', which made a lone '^L' stall for KEYTIMEOUT because it
+# had become a prefix key.
+bindkey '^X^L' clear-screen-and-buffer

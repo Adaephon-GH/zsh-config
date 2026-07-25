@@ -9,6 +9,7 @@ fi
 autoload -Uz zcalc
 autoload -Uz zmv
 autoload -Uz add-zsh-hook
+autoload -Uz add-zle-hook-widget
 
 # {{{ Completion
 # The following lines were added by compinstall
@@ -34,10 +35,24 @@ zstyle ':completion:*' preserve-prefix '//[^/]##/'
 zstyle ':completion:*' rehash true
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*' verbose true
-zstyle :compinstall filename "${ZDOTDIR:-HOME}/.zshrc"
+zstyle :compinstall filename "${ZDOTDIR:-$HOME}/.zshrc"
 
+# Completion-function directories shipped as submodules (e.g. timewarrior)
+# must be on $fpath *before* compinit scans it.
+typeset -U fpath
+fpath+=( ${ZDOTDIR:-$HOME}/.zshrc.d/*/_*(N:h) )
+
+# Run compinit once. Rebuild and security-audit the dump at most once a day;
+# otherwise trust the existing dump (compinit -C) for a faster startup.
 autoload -Uz compinit
-compinit
+() {
+    local -a stale=( ${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24) )
+    if (( $#stale )); then
+        compinit
+    else
+        compinit -C
+    fi
+}
 # End of lines added by compinstall
 
 # Additional completion configuration
@@ -80,18 +95,6 @@ setopt histnostore
 setopt histreduceblanks
 setopt histignorespace
 setopt histignorealldups
-# }}}
-
-# {{{ command line prediction; WARNING: breaks zsh-syntax highlighting
-autoload -Uz predict-on
-zle -N predict-on
-zle -N predict-off
-predict-toggle() {
-    (( predict_on = 1 - predict_on )) && zle predict-on || zle predict-off
-}
-zle -N predict-toggle
-zstyle ':predict' toggle true
-zstyle ':verbose' toggle true
 # }}}
 
 ## I/O
@@ -156,13 +159,13 @@ zstyle ':vcs_info:hg*:*' hgrevformat '%F{11}%r%F{1}:%F{3}%12.12h'
 
 # Git hash changes branch misc
 +vi-git-untracked(){
-    # Abort if not in work-tree
-    [[ $(git rev-parse --is-inside-work-tree) = 'false' ]] && return
+    # vcs_info only runs this hook inside a git repo, so no work-tree probe is
+    # needed here. stderr is silenced for the rare case of being inside .git/.
     local staged unstaged untracked
 
     local -A counts
     counts=(
-        $(git status --porcelain | awk '
+        $(git status --porcelain 2>/dev/null | awk '
             BEGIN {st=0; us=0; ut=0}
             /^[MADRC]/ {st+=1}
             /^.[MD]/ {us+=1}
@@ -248,68 +251,46 @@ add-zsh-hook precmd pyenv_indicator
 # }}}
 
 # {{{ function to determine if login is local or remote
+# Flag network logins so the prompt (psvar[2]) can mark them -- important so a
+# stray `poweroff` is never run on a remote host mistaken for the local one.
+#
+# Checked cheapest first:
+#   1. The SSH_* variables sshd exports into the session environment.
+#   2. Otherwise walk the process-tree ancestry via /proc -- no forks, unlike
+#      the old `ps`-per-level version -- looking for a remote-access daemon.
+#      This also catches `su -`, which scrubs the SSH_* variables but leaves the
+#      shell parented under sshd / mosh-server / telnetd / rlogind.
+# logintype runs once per shell startup, so the walk is negligible.
+#
+# Limitation: a strict `hidepid` mount on /proc can hide an ancestor owned by
+# another user and stop the walk early; the SSH_* check still covers the common
+# direct-login case, and on non-Linux systems (no /proc) only step 1 applies.
 logintype () {
     emulate -L zsh
-    local lt h ps ppid=$PPID
-    while (( ppid > 1 ))
-    do
-        ps=("${(f)$(ps lwp$ppid 2>/dev/null || ps -lp$ppid)}")
-        h=($=ps[1])
-        ps=($=ps[2])
-        case "$ps" in
-            *sshd*)
-                # Shell running from ssh, probably not the local machine
-                lt="remote"
-                break
-                ;;
-            *(xterm|rxvt|dtterm|eterm|gnoterm|termite|konsole|emacs|tmux|screen|kitty)*)
-                # Shell running from an emulator, check for local displays
-                # TODO: look for better way to determine use of terminal emulator than just listing everything
-                if [[ -n $SSH_CLIENT ]]
-                then
-                    # Emulator started from ssh, probably port-forwarding
-                    lt="remote"
-                    break
-                elif [[ $DISPLAY = ($HOST*|):* && ${HOSTDISPLAY:-$HOST} = $HOST* ]]
-                then
-                    # Shell running on a local display (though could be VNC)
-                    lt="local"
-                    break
-                elif [[ -n $DISPLAY ]]
-                then
-                    # Shell running on a remote display
-                    lt="remote"
-                    break
-                else
-                    # Probably running inside a text-mode emacs
-                fi
-                ;;
-            *login*)
-                # Shell running on the local console, or from rlogin or telnet
-                if [[ $TTY == /dev/pts/* || $TTY == /dev/tty[A-Za-z]* ]]
-                then
-                    # Shell running from rlogin or telnet
-                    lt="remote"
-                else
-                    # Shell running on local console
-                    lt="local"
-                fi
-                break
-                ;;
-            *)
-                # Shell running from su or from some other shell or program
-                if [[ -n $SSH_CLIENT ]]
-                then
-                    # Some ancestor is ssh, probably not local
-                    lt="remote"
-                    break
-                fi
+    if [[ -n $SSH_CONNECTION || -n $SSH_CLIENT || -n $SSH_TTY ]]; then
+        print remote
+        return
+    fi
+
+    local pid=$PPID comm line after
+    local -a fields
+    while (( pid > 1 )) && [[ -r /proc/$pid/stat ]]; do
+        line=$(</proc/$pid/stat)
+        # comm sits between the first '(' and the last ')'; later stat fields
+        # are numeric, so the last ')' in the line is always comm's close.
+        comm=${${line%\)*}#*\(}
+        case $comm in
+            (*sshd*|mosh-server|*telnetd|*rlogind)
+                print remote
+                return
                 ;;
         esac
-        # Not enough information yet, climb the process tree
-        ppid=${ps[$h[(i)PPID]]:-1}
+        after=${line##*\) }          # "state ppid pgrp ..."
+        fields=( ${(s: :)after} )
+        (( pid == fields[2] )) && break
+        pid=$fields[2]
     done
-    echo $lt
+    print local
 }
 psvar[2]=${$(logintype)#local}
 
@@ -319,7 +300,7 @@ psvar[2]=${$(logintype)#local}
 pipestatus () {
     pipestatus_=($pipestatus)
     pipestatuscolor='%K{green}%F{black}'
-    local excode
+    local ec
     for (( ec=1 ; ec <= $#pipestatus_ ; ec++ )) do
         if [ $pipestatus_[ec] -eq 0 ] ; then
             pipestatus_[ec]="ok"
@@ -340,20 +321,23 @@ add-zsh-hook precmd pipestatus
 
 # {{{ indicator whether zle is in vicmd mode
 vicmdindicator=' '
-zle-keymap-select () {
+# Registered as a keymap-select hook (see below). The DECSCUSR cursor-shape
+# sequences are skipped on the Linux console, which does not understand them.
+vicmd-indicator () {
     case $KEYMAP in
-        vicmd) 
+        vicmd)
             vicmdindicator='%S%Bv%s'
-            print -n '\e[2 q'
+            [[ $TERM == linux ]] || print -n '\e[2 q'
             ;;
-        *) 
+        *)
             vicmdindicator=' '
-            print -n '\e[0 q'
+            [[ $TERM == linux ]] || print -n '\e[0 q'
             ;;
     esac
     zle reset-prompt
 }
-zle -N zle-keymap-select
+zle -N vicmd-indicator
+add-zle-hook-widget keymap-select vicmd-indicator
 # }}}
 
 # {{{ set alert on terminals after long running processes finish and log running time
@@ -417,15 +401,30 @@ RPROMPT2=$'<%(!.%F{red}.%F{green})%^%b%f%k'
 }
 
 # {{{ zle line editor initialization
-zle-line-init () {
-    zle zle-keymap-select
+# Use add-zle-hook-widget (rather than overriding the special zle-line-*
+# widgets directly) so these coexist with plugins that also hook them, e.g.
+# fast-syntax-highlighting.
+line-init-setup () {
+    vicmd-indicator          # set initial vi indicator + cursor shape
     enter-kbd-transmit-mode
 }
-zle-line-finish () {
+line-finish-teardown () {
     leave-kbd-transmit-mode
 }
-zle -N zle-line-init
-zle -N zle-line-finish
+zle -N line-init-setup
+zle -N line-finish-teardown
+add-zle-hook-widget line-init line-init-setup
+add-zle-hook-widget line-finish line-finish-teardown
+# }}}
+
+# {{{ redraw the current prompt when the terminal window is resized
+# Only the prompt currently being edited can reflow; prompts already printed
+# above are frozen scrollback and cannot be redrawn (a terminal stores rendered
+# cells, not the prompt source). This keeps the width-sensitive parts -- the top
+# rule and the right-aligned middle segment -- correct after a resize.
+TRAPWINCH () {
+    zle && { zle reset-prompt; zle -R }
+}
 # }}}
 
 # {{{ set title on terminal (xterm, tmux, screen, rxvt)
@@ -443,13 +442,13 @@ xtermtitle() {
     #cl=${(V)cl//\%/\%\%} # escape non-visibles and print specials
 
     case $TERM in
-        screen*)
+        screen*|tmux*)
             print -n -- "\e]2;[ZSH${TERMTITLE:+-}${TERMTITLE}] $preamble $cl\a" # plain xterm title
             print -n --  "\ek${cmd:-zsh}\e\\"      # screen title (in ^A")
             #print -Pn "\e_$1\e\\"   # screen location
             print -n -- "\e_$cl\e\\"   # screen location
             ;;
-        *xterm*|rxvt*|alacritty)
+        *xterm*|rxvt*|alacritty|foot*|wezterm*)
             print -n -- "\e]2;[ZSH${TERMTITLE:+-}${TERMTITLE}] $preamble $cl\a" # plain xterm title
             ;;
     esac
@@ -464,7 +463,7 @@ xtermtitle_pe () {
 }
 
 case $TERM in
-    *xterm*|screen*|rxvt*|alacritty)
+    *xterm*|screen*|tmux*|rxvt*|alacritty|foot*|wezterm*)
         add-zsh-hook precmd xtermtitle_pc
         add-zsh-hook preexec xtermtitle_pe
         ;;

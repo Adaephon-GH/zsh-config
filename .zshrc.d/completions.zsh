@@ -1,32 +1,33 @@
-# Commands that provide completion via bashcompinit
+# Commands that provide bash-style completion loaded via bashcompinit,
+# i.e. `complete -C <command>`.
 () {
-    local completion_providers=(terraform mc mcli)
-    if [[ ${#${(k)commands:*completion_providers}} == 0 ]]; then
-        return
-    fi
+    local completion_providers=(terraform mc mcli) cmd
+    local -a present
+    present=(${(k)commands:*completion_providers})
+    (( $#present )) || return
     autoload -U +X bashcompinit && bashcompinit
-    for cmd in ${(k)commands:*completion_providers}; do
+    for cmd in $present; do
         complete -o nospace -C $commands[$cmd] $cmd
     done
 }
 
-
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /home/mruf/.local/bin/mc mc
-# Completion for commands that provide their own completion via
+# Commands that ship their own zsh completion via
 #
 #     source <(COMMAND completion zsh)
 #
-# *and* where the generated completion has the name '_COMMAND'.
-#
+# *and* whose generated completion function is named `_COMMAND`.
+# Generate and load it lazily on the first completion attempt so startup
+# stays fast. The stub reads its own name from $0 (`_<cmd>` -> `<cmd>`),
+# replaces itself with the real completion, then re-dispatches.
 () {
-    local completion_providers=(helm kubectl k9s exo)
+    local completion_providers=(helm kubectl k9s exo) cmd
     for cmd in ${(k)commands:*completion_providers}; do
-        _$cmd () {
-            source <($cmd completion zsh)
-            _$cmd $@
-        }
+        functions[_$cmd]='
+            local _cmd=${0#_}
+            unfunction _$_cmd
+            source <($_cmd completion zsh)
+            _$_cmd "$@"
+        '
         compdef _$cmd $cmd
     done
 }
-

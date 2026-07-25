@@ -199,13 +199,13 @@ tcheckcap () {
 }
 
 mkcd () {
-    mkdir -p "$1"
-    cd "$1"
+    mkdir -p "$1" && cd "$1"
 }
 compdef _mkdir mkcd
 
 alertme alertme-hp() {
     local type=$1 time=$2 set_at=$(date +'%F %T')
+    local -a cmd
     shift 2
     cmd=(systemd-run --user)
     case $type in
@@ -293,6 +293,7 @@ temp-ssh-agent () {
 }
 
 serfile () {
+    emulate -L zsh
     setopt extended_glob
     local name=${1:-}
     local pad=${2:-4}
