@@ -8,6 +8,10 @@ if [[ -x /usr/bin/dircolors ]]; then
     alias egrep='egrep --color=auto'
 fi
 
+# use copy-on-write reflinks on btrfs (--reflink=auto falls back to a normal
+# copy on filesystems without CoW support)
+alias cp='cp --reflink=auto'
+
 # some more ls aliases
 alias ll='ls -lF'
 alias la='ls -AlF'

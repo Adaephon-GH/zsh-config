@@ -203,6 +203,10 @@ mkcd () {
 }
 compdef _mkdir mkcd
 
+# compile a single C file to a warnings-clean binary named after the source
+Sgcc () gcc -Wall -pedantic -o ${1%.c} $@
+compdef _gcc Sgcc
+
 alertme alertme-hp() {
     local type=$1 time=$2 set_at=$(date +'%F %T')
     local -a cmd
