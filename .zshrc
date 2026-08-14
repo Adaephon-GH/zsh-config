@@ -42,15 +42,28 @@ zstyle :compinstall filename "${ZDOTDIR:-$HOME}/.zshrc"
 typeset -U fpath
 fpath+=( ${ZDOTDIR:-$HOME}/.zshrc.d/*/_*(N:h) )
 
-# Run compinit once. Rebuild and security-audit the dump at most once a day;
-# otherwise trust the existing dump (compinit -C) for a faster startup.
+# Run compinit once, and only from here: .zshenv sets skip_global_compinit=1 so
+# the distribution's /etc/zsh/zshrc cannot build a dump from an $fpath that is
+# still missing the directories added above. Rebuild and security-audit the dump
+# at most once a day; otherwise trust the existing dump (compinit -C) for a
+# faster startup.
 autoload -Uz compinit
 () {
-    local -a stale=( ${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24) )
-    if (( $#stale )); then
-        compinit
+    local dump=${ZDOTDIR:-$HOME}/.zcompdump
+    # Fresh = the dump exists *and* was audited less than 24h ago. A missing
+    # dump is therefore stale, so the very first run gets the full compaudit
+    # rather than compinit -C's unaudited fast path.
+    local -a fresh=( $dump(N.mh-24) )
+    if (( $#fresh )); then
+        compinit -C -d $dump
     else
-        compinit -C
+        compinit -d $dump
+        # compinit rewrites the dump only when the *number* of completion files
+        # in $fpath changed; otherwise it just sources it and the mtime never
+        # moves. Touch it so the test above means "last audited" rather than
+        # "last rebuilt" -- without this the dump stays older than 24h forever
+        # and the -C fast path is never taken again.
+        touch $dump
     fi
 }
 # End of lines added by compinstall

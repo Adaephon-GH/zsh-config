@@ -24,9 +24,43 @@ git submodule update --init
   (the maintained fork; the original `zdharma` repo was removed from GitHub in 2021).
   If it is not checked out, the shell falls back to zsh's built-in `zle_highlight`.
 * `timewarrior_zsh_completion` — completion for Timewarrior. Its directory is
-  discovered and added to `$fpath` automatically *before* `compinit` runs.
+  discovered and added to `$fpath` automatically *before* `compinit` runs — see
+  [Completion dump and the distribution's `compinit`](#completion-dump-and-the-distributions-compinit).
 
 ## Notes
+
+### Completion dump and the distribution's `compinit`
+
+`.zshenv` sets `skip_global_compinit=1`. On Ubuntu, `/etc/zsh/zshrc` — sourced
+*before* `~/.zshrc` — ends with an unconditional `compinit`, which runs while
+`$fpath` still lacks the submodule completion directories that `.zshrc` adds.
+
+This matters more than a wasted `compinit` call, because **`compinit` decides
+whether an existing `~/.zcompdump` can be reused by comparing only the file
+*count* recorded in its header against the files currently in `$fpath`.** With
+both `compinit` calls sharing one dump file they fight over it:
+
+1. `/etc/zsh/zshrc` writes a dump without the submodule completions.
+2. `.zshrc` finds that dump fresh, runs `compinit -C`, and loads it verbatim —
+   `_timew` is never registered.
+3. Once the dump passes the 24h mark, `.zshrc`'s full `compinit` notices the
+   count mismatch, rescans, and writes a correct dump — completion works.
+4. The next shell started runs the global `compinit`, sees *its* count mismatch,
+   rescans without the submodule directories and resets the dump. Broken again.
+
+Skipping the global call leaves `.zshrc` as the single writer, so the dump
+always matches the `$fpath` it was built from.
+
+Two consequences of the count-only reuse test are worth knowing:
+
+* Adding or removing a completion file changes the count and is picked up
+  automatically. **Editing one in place is not** — within the 24h window
+  `compinit -C` loads the old dump regardless. Run `rm ~/.zcompdump` and start a
+  new shell to force a rebuild.
+* When the count is unchanged, a full `compinit` sources the dump and returns
+  *without rewriting it*, leaving the mtime untouched. `.zshrc` therefore
+  `touch`es the dump itself after the daily run; otherwise it would stay stale
+  forever and every shell would pay for a full `compaudit`.
 
 ### Redrawing the prompt on window resize
 
