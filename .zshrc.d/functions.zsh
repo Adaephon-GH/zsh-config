@@ -256,6 +256,49 @@ psubdirgit () {
 }
 compdef '_dispatch git git' subdirgit psubdirgit
 
+rename-git-master2main () {
+  emulate -L zsh
+  set -o pipefail
+
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+    print -u2 "rename-git-master2main: not inside a git repository"
+    return 1
+  }
+
+  if ! git show-ref --verify --quiet refs/heads/master; then
+    print -u2 "rename-git-master2main: no local branch 'master' — nothing to do"
+    return 1
+  fi
+
+  if git show-ref --verify --quiet refs/heads/main; then
+    print -u2 "rename-git-master2main: local branch 'main' already exists — aborting"
+    return 1
+  fi
+
+  local remote=origin
+  git remote get-url "$remote" >/dev/null 2>&1 || remote=""
+
+  # Rename the local branch.
+  git branch -m master main || return 1
+
+  if [[ -n "$remote" ]]; then
+    # Pick up the renamed branch and drop the stale origin/master ref.
+    git fetch --prune "$remote" || return 1
+
+    if git show-ref --verify --quiet "refs/remotes/$remote/main"; then
+      git branch --set-upstream-to="$remote/main" main || return 1
+    else
+      print -u2 "rename-git-master2main: '$remote' has no 'main' branch yet — rename it on the remote (e.g. GitHub UI), then re-run 'git fetch --prune && git branch -u $remote/main main'"
+    fi
+
+    # Fix origin/HEAD so 'git rev-parse origin/HEAD' etc. resolve.
+    git remote set-head "$remote" --auto >/dev/null 2>&1
+  else
+    print -u2 "rename-git-master2main: no 'origin' remote — renamed local branch only"
+  fi
+
+  print "rename-git-master2main: done — local branch is now 'main'"
+}
 
 temp-ssh-agent () {
     case $1 in 
