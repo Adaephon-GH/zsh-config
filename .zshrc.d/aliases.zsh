@@ -55,8 +55,8 @@ fi
 
 alias snek=ipython
 
-alias claude="claude --model sonnet --effort high"
+alias claude="claude --model opus --effort medium"
 alias haiku="claude --model haiku"
-alias opus="claude --model opus --effort high"
+alias opus+="claude --model opus --effort high"
 
 (( $+command[bat] )) || alias bat="batcat"
