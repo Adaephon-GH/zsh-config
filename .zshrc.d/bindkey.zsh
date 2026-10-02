@@ -1,5 +1,20 @@
 bindkey -e
 
+# Word widgets use shell words: one argument / operator (;, &&, |, 2>, ...)
+# per step, quoting respected. See match-words-by-style.
+autoload -Uz select-word-style
+select-word-style shell
+
+# Alt+Backspace / Alt+Shift+D: finer-grained kills that stop at '/', '$',
+# braces, '=', quotes, spaces etc. (path components, parameter names,
+# words inside a quoted argument).
+zle -N backward-kill-subword backward-kill-word-match
+zle -N kill-subword kill-word-match
+zstyle ':zle:(backward-|)kill-subword' word-style normal
+zstyle ':zle:(backward-|)kill-subword' word-chars '*?_-.[]~&;!#%^()<>'
+bindkey '^[^?' backward-kill-subword
+bindkey '^[D' kill-subword
+
 # ^X : Strg-x
 # ^[x : Esc+x, Alt-x
 # ^[X : Esc+Shift-x, Alt-Shift-x
