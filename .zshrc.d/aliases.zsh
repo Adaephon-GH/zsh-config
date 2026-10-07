@@ -59,4 +59,4 @@ alias claude="claude --model opus --effort medium"
 alias haiku="claude --model haiku"
 alias opus+="claude --model opus --effort high"
 
-(( $+command[bat] )) || alias bat="batcat"
+(( $+commands[bat] )) || alias bat="batcat"
