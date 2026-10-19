@@ -78,3 +78,24 @@ _bash_complete_C() {
         compdef _$cmd $cmd
     done
 }
+
+# Commands that ship their own zsh completion via
+#
+#     source <(COMMAND complete zsh)
+#
+# *and* whose generated completion function is named `_COMMAND`.
+# Generate and load it lazily on the first completion attempt so startup
+# stays fast. The stub reads its own name from $0 (`_<cmd>` -> `<cmd>`),
+# replaces itself with the real completion, then re-dispatches.
+() {
+    local completion_providers=(fclones) cmd
+    for cmd in ${(k)commands:*completion_providers}; do
+        functions[_$cmd]='
+            local _cmd=${0#_}
+            unfunction _$_cmd
+            source <($_cmd complete zsh)
+            _$_cmd "$@"
+        '
+        compdef _$cmd $cmd
+    done
+}
